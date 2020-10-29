@@ -8,8 +8,8 @@
                 <!-- <ReadingClub v-else-if="display === 'ReadingClub'"/> -->
                 <User v-else-if="display === 'User'"/>
             </div>
-        <!-- If using vue-router -->
-        <router-view></router-view>
+        <!-- If using vue-router 
+        <router-view></router-view> -->
     </v-container>
     </v-main>   
 </template>
@@ -24,7 +24,7 @@ export default {
     },
     data() {
         return {
-            display: 'About',
+            display: 'Books',
         }
     }
     
