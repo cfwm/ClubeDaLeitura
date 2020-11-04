@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        
+        <h1>Clube da Leitura</h1>
     </v-container>    
 </template>
 

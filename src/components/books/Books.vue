@@ -73,6 +73,8 @@
                       label="Categoria"
                     ></v-text-field>
                   </v-col>
+                </v-row>
+                <v-row>
                   <v-col
                     cols="12"
                     sm="6"
@@ -91,6 +93,38 @@
                     <v-text-field
                       v-model="editedBook.edition"
                       label="Edição"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedBook.overview"
+                      label="Resumo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedBook.language"
+                      label="Idioma"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedBook.pages"
+                      label="Páginas"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -155,12 +189,17 @@
     </template>
 
     <template v-slot:no-data>
-      <v-btn
+      <!-- <v-btn
         color="primary"
         @click="initialize"
       >
         Reset
-      </v-btn>
+      </v-btn> -->
+      <v-container>
+        <v-row >
+          Você não possui livros cadastrados.
+        </v-row>
+      </v-container>
     </template>
   </v-data-table>
 </template>
@@ -222,115 +261,116 @@
       },
     },
 
-    created () {
-      this.initialize()
+    beforeCreated () {
+      //this.initialize()
+      this.getBooks()
     },
 
     methods: {
-      initialize () {
-        this.books = [
-          {
-            title: 'Título do livro 01',
-            author: 'Autor 01',
-            category: 'Ficção científica',
-            publisher: 'Boitempo',
-            edition: 1,
-            overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-            language: 'Português',
-            pages: 184,
-          },
-          {
-            title: 'Título do livro 02',
-            author: 'Autor 02',
-            category: 'Sociologia',
-            publisher: 'Companhia das Letras',
-            edition: 1,
-            overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-            language: 'Português',
-            pages: 524,
-          },
-          {
-            title: 'Título do livro 03',
-            author: 'Autor  03',
-            category: 'Antropologia',
-            publisher: 'Martin Claret',
-            edition: 2,
-            overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-            language: 'Português',
-            pages: 359,
-          },
-          {
-            title: 'Título do livro 04',
-            author: 'Autor  04',
-            category: 'Ciência Política',
-            publisher: 'Cosac Naify',
-            edition: 2,
-            overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-            language: 'Inglês',
-            pages: 158,
-          },
-          {
-            title: 'Título do livro 05',
-            author: 'Autor 05',
-            category: 'Teoria de Sistemas',
-            publisher: 'Cosac Naify',
-            edition: 3,
-            overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-            language: 'Inglês',
-            pages: 684,
-          },
-          {
-            title: 'Título do livro 06',
-            author: 'Autor 06',
-            category: "Probabilidade",
-            publisher: 'Martin Claret',
-            edition: 3,
-            overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-            language: 'Espanhol',
-            pages: 408,
-          },
-          {
-            title: 'Título do livro 07',
-            author: 'Autor 07',
-            category: 'Algoritmos',
-            publisher: 'Companhia das Letras',
-            edition: 4,
-            overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-            language: 'Espanhol',
-            pages: 197,
-          },
-          {
-            title: 'Título do livro 08',
-            author: 'Autor 08',
-            category: 'Banco de Dados',
-            publisher: 'Boitempo',
-            edition: 10,
-            overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-            language: 'Português',
-            pages: 298,
-          },
-          {
-            title: 'Título do livro 09',
-            author: 'Autor 09',
-            category: 'Programação Web',
-            publisher: 'Boitempo',
-            edition: 5,
-            overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-            language: 'Português',
-            pages: 350,
-          },
-          {
-            title: 'Título do livro 10',
-            author: 'Autor 10',
-            category: 'Literatura',
-            publisher: 'Companhia das Letras',
-            edition: 7,
-            overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-            language: 'Inglês',
-            pages: 209,
-          },
-        ]
-      },
+      // initialize () {
+      //   this.books = [
+      //     {
+      //       title: 'Título do livro 01',
+      //       author: 'Autor 01',
+      //       category: 'Ficção científica',
+      //       publisher: 'Boitempo',
+      //       edition: 1,
+      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
+      //       language: 'Português',
+      //       pages: 184,
+      //     },
+      //     {
+      //       title: 'Título do livro 02',
+      //       author: 'Autor 02',
+      //       category: 'Sociologia',
+      //       publisher: 'Companhia das Letras',
+      //       edition: 1,
+      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
+      //       language: 'Português',
+      //       pages: 524,
+      //     },
+      //     {
+      //       title: 'Título do livro 03',
+      //       author: 'Autor  03',
+      //       category: 'Antropologia',
+      //       publisher: 'Martin Claret',
+      //       edition: 2,
+      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
+      //       language: 'Português',
+      //       pages: 359,
+      //     },
+      //     {
+      //       title: 'Título do livro 04',
+      //       author: 'Autor  04',
+      //       category: 'Ciência Política',
+      //       publisher: 'Cosac Naify',
+      //       edition: 2,
+      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
+      //       language: 'Inglês',
+      //       pages: 158,
+      //     },
+      //     {
+      //       title: 'Título do livro 05',
+      //       author: 'Autor 05',
+      //       category: 'Teoria de Sistemas',
+      //       publisher: 'Cosac Naify',
+      //       edition: 3,
+      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
+      //       language: 'Inglês',
+      //       pages: 684,
+      //     },
+      //     {
+      //       title: 'Título do livro 06',
+      //       author: 'Autor 06',
+      //       category: "Probabilidade",
+      //       publisher: 'Martin Claret',
+      //       edition: 3,
+      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
+      //       language: 'Espanhol',
+      //       pages: 408,
+      //     },
+      //     {
+      //       title: 'Título do livro 07',
+      //       author: 'Autor 07',
+      //       category: 'Algoritmos',
+      //       publisher: 'Companhia das Letras',
+      //       edition: 4,
+      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
+      //       language: 'Espanhol',
+      //       pages: 197,
+      //     },
+      //     {
+      //       title: 'Título do livro 08',
+      //       author: 'Autor 08',
+      //       category: 'Banco de Dados',
+      //       publisher: 'Boitempo',
+      //       edition: 10,
+      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
+      //       language: 'Português',
+      //       pages: 298,
+      //     },
+      //     {
+      //       title: 'Título do livro 09',
+      //       author: 'Autor 09',
+      //       category: 'Programação Web',
+      //       publisher: 'Boitempo',
+      //       edition: 5,
+      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
+      //       language: 'Português',
+      //       pages: 350,
+      //     },
+      //     {
+      //       title: 'Título do livro 10',
+      //       author: 'Autor 10',
+      //       category: 'Literatura',
+      //       publisher: 'Companhia das Letras',
+      //       edition: 7,
+      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
+      //       language: 'Inglês',
+      //       pages: 209,
+      //     },
+      //   ]
+      // },
 
       editBook (book) {
         this.editedIndex = this.books.indexOf(book)
@@ -365,16 +405,63 @@
         })
       },
 
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.books[this.editedIndex], this.editedBook)
-        } else {
-          this.books.push(this.editedBook)
+      // save () {
+      //   if (this.editedIndex > -1) {
+      //     Object.assign(this.books[this.editedIndex], this.editedBook)
+      //   } else {
+      //     this.books.push(this.editedBook)
+      //   }
+      //   this.close()
+      // },
+      async save () {
+        
+        try{
+          const metodo = this.id ? 'patch' : 'post'
+          const finalUrl = this.id ? `/${this.id}.json` : '.json'
+          // if (this.editedIndex > -1) {
+          //  Object.assign(this.books[this.editedIndex], this.editedBook)
+          // } else {
+          //   this.books.push(this.editedBook)
+          // }
+          await this.$http[metodo](`/books${finalUrl}`, this.editedBook)
+          //this.cleanInputs()
+          this.close()
+        }catch(e){
+          console.log(e)
         }
-        this.close()
+      },
+
+      async getBooks() {
+        await this.$http('books.json').then(resp => {
+          this.books = resp.data
+        })
+      },
+      
+      cleanInputs(){
+        this.title = ''
+        this.author = ''
+        this.category = ''
+        this.publisher = ''
+        this.edition = ''
+        this.overview = ''
+        this.language = ''
+        this.pages = ''
       },
     },
+
+    
+
   }
+
+  // title: '',
+  // author: '',
+  // category: '',
+  // publisher: '',
+  // edition: '',
+  // overview:'',
+  // language: '',
+  // pages:'',
+
 </script>
 
 <style>

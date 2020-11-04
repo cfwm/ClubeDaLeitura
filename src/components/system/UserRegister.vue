@@ -1,10 +1,7 @@
 <template>
     <v-container>
-        <v-row>
-            <h1>Clube da Leitura</h1>
-        </v-row>
-
-    </v-container>    
+        
+    </v-container>
 </template>
 
 <script>

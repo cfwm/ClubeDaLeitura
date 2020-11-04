@@ -3,8 +3,7 @@
         <h1 class="">Clube da Leitura</h1>
         <h3>Bem vindo ao Clube da Leitura!</h3>
         <p>
-            Este é um espaço para escrever sobre o Clube da Leitura, 
-            escrever sobre como o sistema surgiu e como o sistema funciona. 
+            Este espaço é destinado a maiores informações sobre o Clube da Leitura. 
         </p> 
     </v-container>
 </template>
