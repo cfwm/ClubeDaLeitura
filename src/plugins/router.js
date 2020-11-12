@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Sobre from '@/components/system/About'
-import Log from '@/components/system/Log'
+import Sobre from '@/components/home/About'
+import Login from '@/components/admin/Login'
 import Books from '@/components/books/Books'
 import User from '@/components/user/User'
 import ReadingClub from '@/components/reading-club/ReadingClub'
@@ -16,15 +16,16 @@ import ReadingClub from '@/components/reading-club/ReadingClub'
 Vue.use(Router)
 
 const router = new Router({
-    mode: 'history',  //para o servidor, ver: https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
+    mode: 'history',  
+    //para configurar o servidor com mode: history, ver: https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
     //https://router.vuejs.org/guide/essentials/history-mode.html
     
     routes: [
         {
-            name: 'log',
+            name: 'login',
             path: '/',
             components: {
-                default: Log,
+                default: Login,
                 //register: Register
             }
         },

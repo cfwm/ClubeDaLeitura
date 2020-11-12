@@ -5,7 +5,7 @@ Vue.use({
     install(Vue) {
         
         Vue.prototype.$http = axios.create({
-            baseURL: 'https://backend-sa.firebaseio.com/'
+            baseURL: 'http://localhost:3000/'
         })
     }
 })

@@ -1,6 +1,6 @@
 <template>
-    
-    <v-card
+    <v-container>
+            <v-card
         elevation="15"
         class="d-flex flex-column justify-center align-center"
     >
@@ -114,7 +114,7 @@
             </v-row>
         </v-card-actions>
     </v-card>
-
+    </v-container>
 </template>
 
 <script>

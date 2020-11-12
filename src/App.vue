@@ -4,7 +4,7 @@
       <Menu />
       <Content />
       <Footer />
-      <Log />
+      <Login />
       
     </v-app>
 </template>
@@ -14,11 +14,11 @@ import AppBar from '@/components/template/AppBar.vue'
 import Menu from '@/components/template/Menu.vue'
 import Content from '@/components/template/Content.vue'
 import Footer from '@/components/template/Footer.vue'
-import Log from '@/components/system/Log'
+import Login from '@/components/admin/Login'
 
 export default {
   components: {
-    AppBar, Menu, Content, Footer, Log  
+    AppBar, Menu, Content, Footer, Login  
   }
 }
 </script>

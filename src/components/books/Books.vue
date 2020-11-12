@@ -1,4 +1,6 @@
 <template>
+  <v-container>
+      <!-- Tabela listagem de livros -->
   <v-data-table
     :headers="headers"
     :items="books"
@@ -7,7 +9,7 @@
     :single-expand="singleExpand"
     :expanded.sync="expanded"
     item-key="title"
-    show-expand
+
   >
     <template v-slot:top>
       <v-toolbar
@@ -35,6 +37,8 @@
               Novo Livro
             </v-btn>
           </template>
+
+           <!-- Formulário de criação/edição de livro -->
           <v-card>
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>
@@ -42,6 +46,7 @@
 
             <v-card-text>
               <v-container>
+
                 <v-row>
                   <v-col
                     cols="12"
@@ -49,7 +54,7 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedBook.name"
+                      v-model="editedBook.title"
                       label="Título"
                     ></v-text-field>
                   </v-col>
@@ -130,7 +135,8 @@
                 </v-row>
               </v-container>
             </v-card-text>
-
+            
+            <!-- Botões do formulário de criação/edição de livro -->
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
@@ -143,16 +149,18 @@
               <v-btn
                 color="blue darken-1"
                 text
-                @click="save"
+                @click="addBook"
               >
                 Salvar
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
+
+        <!-- Janela de confirmação de exclusão de livros -->
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card> 
-            <v-card-title class="headline">Você quer mesmo excluir {{ books.title }} da sua estante?</v-card-title>
+            <v-card-title class="headline">Você quer mesmo excluir  da sua estante?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
@@ -163,6 +171,8 @@
         </v-dialog>
       </v-toolbar>
     </template>
+
+    <!-- Botões de edição/exclusão de livro -->
     <template v-slot:item.actions="{ book }">    
       <v-icon
         small
@@ -179,6 +189,7 @@
       </v-icon>
     </template>
 
+    <!-- Tabela de listagem de livros / linha expandida -->
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">
         <p></p>
@@ -188,6 +199,7 @@
       </td>
     </template>
 
+    <!-- Tabela de listagem de livros / sem livros cadastrados -->
     <template v-slot:no-data>
       <!-- <v-btn
         color="primary"
@@ -202,6 +214,7 @@
       </v-container>
     </template>
   </v-data-table>
+  </v-container>
 </template>
 
 <script>
@@ -209,6 +222,8 @@
     data: () => ({
       dialog: false,
       dialogDelete: false,
+      expanded: [],
+      singleExpand: false,
       headers: [
         {
           text: 'Título',
@@ -220,29 +235,29 @@
         { text: 'Categoria', value: 'category' },
         { text: 'Editora', value: 'publisher' },
         { text: 'Edição', value: 'edition' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: 'Ações', value: 'actions', sortable: false },
       ],
       books: [],
       editedIndex: -1,
       editedBook: {
-        title: '',
         author: '',
         category: '',
-        publisher: '',
         edition: '',
-        overview:'',
         language: '',
+        overview:'',
         pages:'',
+        publisher: '',
+        title: ''
       },
-      defaultItem: {
-        title: '',
+      defaultBook: {
         author: '',
         category: '',
-        publisher: '',
         edition: '',
-        overview:'',
         language: '',
+        overview:'',
         pages:'',
+        publisher: '',
+        title: ''
       },
     }),
 
@@ -261,118 +276,14 @@
       },
     },
 
-    beforeCreated () {
-      //this.initialize()
+    created() {
       this.getBooks()
     },
 
     methods: {
-      // initialize () {
-      //   this.books = [
-      //     {
-      //       title: 'Título do livro 01',
-      //       author: 'Autor 01',
-      //       category: 'Ficção científica',
-      //       publisher: 'Boitempo',
-      //       edition: 1,
-      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-      //       language: 'Português',
-      //       pages: 184,
-      //     },
-      //     {
-      //       title: 'Título do livro 02',
-      //       author: 'Autor 02',
-      //       category: 'Sociologia',
-      //       publisher: 'Companhia das Letras',
-      //       edition: 1,
-      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-      //       language: 'Português',
-      //       pages: 524,
-      //     },
-      //     {
-      //       title: 'Título do livro 03',
-      //       author: 'Autor  03',
-      //       category: 'Antropologia',
-      //       publisher: 'Martin Claret',
-      //       edition: 2,
-      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-      //       language: 'Português',
-      //       pages: 359,
-      //     },
-      //     {
-      //       title: 'Título do livro 04',
-      //       author: 'Autor  04',
-      //       category: 'Ciência Política',
-      //       publisher: 'Cosac Naify',
-      //       edition: 2,
-      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-      //       language: 'Inglês',
-      //       pages: 158,
-      //     },
-      //     {
-      //       title: 'Título do livro 05',
-      //       author: 'Autor 05',
-      //       category: 'Teoria de Sistemas',
-      //       publisher: 'Cosac Naify',
-      //       edition: 3,
-      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-      //       language: 'Inglês',
-      //       pages: 684,
-      //     },
-      //     {
-      //       title: 'Título do livro 06',
-      //       author: 'Autor 06',
-      //       category: "Probabilidade",
-      //       publisher: 'Martin Claret',
-      //       edition: 3,
-      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-      //       language: 'Espanhol',
-      //       pages: 408,
-      //     },
-      //     {
-      //       title: 'Título do livro 07',
-      //       author: 'Autor 07',
-      //       category: 'Algoritmos',
-      //       publisher: 'Companhia das Letras',
-      //       edition: 4,
-      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-      //       language: 'Espanhol',
-      //       pages: 197,
-      //     },
-      //     {
-      //       title: 'Título do livro 08',
-      //       author: 'Autor 08',
-      //       category: 'Banco de Dados',
-      //       publisher: 'Boitempo',
-      //       edition: 10,
-      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-      //       language: 'Português',
-      //       pages: 298,
-      //     },
-      //     {
-      //       title: 'Título do livro 09',
-      //       author: 'Autor 09',
-      //       category: 'Programação Web',
-      //       publisher: 'Boitempo',
-      //       edition: 5,
-      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-      //       language: 'Português',
-      //       pages: 350,
-      //     },
-      //     {
-      //       title: 'Título do livro 10',
-      //       author: 'Autor 10',
-      //       category: 'Literatura',
-      //       publisher: 'Companhia das Letras',
-      //       edition: 7,
-      //       overview:'Esta é uma breve descrição do LIVRO XXXXX.',
-      //       language: 'Inglês',
-      //       pages: 209,
-      //     },
-      //   ]
-      // },
-
+      
       editBook (book) {
+        console.log('ret book', book)
         this.editedIndex = this.books.indexOf(book)
         this.editedBook = Object.assign({}, book)
         this.dialog = true
@@ -392,7 +303,7 @@
       close () {
         this.dialog = false
         this.$nextTick(() => {
-          this.editedBook = Object.assign({}, this.defaultItem)
+          this.editedBook = Object.assign({}, this.defaultBook)
           this.editedIndex = -1
         })
       },
@@ -400,12 +311,12 @@
       closeDelete () {
         this.dialogDelete = false
         this.$nextTick(() => {
-          this.editedBook = Object.assign({}, this.defaultItem)
+          this.editedBook = Object.assign({}, this.defaultBook)
           this.editedIndex = -1
         })
       },
 
-      // save () {
+      // saveBook () {
       //   if (this.editedIndex > -1) {
       //     Object.assign(this.books[this.editedIndex], this.editedBook)
       //   } else {
@@ -413,18 +324,27 @@
       //   }
       //   this.close()
       // },
-      async save () {
-        
+      async addBook() {
+        try {
+          if (this.editedIndex > -1) {
+           Object.assign(this.books[this.editedIndex], this.editedBook)
+          } else {
+            console.log(typeof this.editedBook)
+            this.books.push(this.editedBook)
+          }
+          await this.saveBook()
+        }catch (fail) {
+          console.log(fail)
+        }
+      }, 
+
+      async saveBook () {
         try{
-          const metodo = this.id ? 'patch' : 'post'
-          const finalUrl = this.id ? `/${this.id}.json` : '.json'
-          // if (this.editedIndex > -1) {
-          //  Object.assign(this.books[this.editedIndex], this.editedBook)
-          // } else {
-          //   this.books.push(this.editedBook)
-          // }
+          console.log('ret editedIndex', this.editedIndex)
+          const metodo = this.editedIndex === -1 ? 'post' : 'patch'
+          const finalUrl = this.editedIndex === -1 ? `/${this.books.length + 1}` : `/${this.editedIndex}` 
           await this.$http[metodo](`/books${finalUrl}`, this.editedBook)
-          //this.cleanInputs()
+          this.cleanInputs()
           this.close()
         }catch(e){
           console.log(e)
@@ -432,36 +352,17 @@
       },
 
       async getBooks() {
-        await this.$http('books.json').then(resp => {
-          this.books = resp.data
-        })
+        await this.$http('books')
+        .then(res => { this.books = res.data })
+        console.log(this.books)
       },
       
       cleanInputs(){
-        this.title = ''
-        this.author = ''
-        this.category = ''
-        this.publisher = ''
-        this.edition = ''
-        this.overview = ''
-        this.language = ''
-        this.pages = ''
+        this.editedBook = this.defaultBook
       },
     },
 
-    
-
   }
-
-  // title: '',
-  // author: '',
-  // category: '',
-  // publisher: '',
-  // edition: '',
-  // overview:'',
-  // language: '',
-  // pages:'',
-
 </script>
 
 <style>

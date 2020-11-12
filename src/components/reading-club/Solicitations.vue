@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <h1>Clube da Leitura</h1>
+        <h1>Solicitações</h1>
     </v-container>    
 </template>
 
@@ -9,9 +9,8 @@ export default {
     /*
     -> solicitações/histórico de solicitações;
     -> solicitações/gerenciamento de solicitações feitas e recebidas;
-    -> busca de livros para empréstimos;
 
-    fazer import de BooksSearching.vue e Solicitaions.vue 
+    fazer export para ReadingClub.vue
     */
 }
 </script>
