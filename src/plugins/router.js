@@ -1,83 +1,82 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 
-import Sobre from '@/components/home/About'
-import Login from '@/components/admin/Login'
+import Home from '@/components/home/Home'
 import Books from '@/components/books/Books'
-import User from '@/components/user/User'
+import BooksSearching from '@/components/reading-club/BooksSearching'
 import ReadingClub from '@/components/reading-club/ReadingClub'
+import Solicitations from '@/components/reading-club/Solicitations'
+import User from '@/components/user/User'
+import Login from '@/components/login/Login'
 
-// import AppBar from '@/components/template/AppBar'
-// import Content from '@/components/template/Content'
-// import Footer from '@/components/template/Footer'
-// import Header from '@/components/template/Header'
-// import Menu from '@/components/template/Menu'
+Vue.use(VueRouter)
 
-Vue.use(Router)
+//const Admin = () => import('@/components/admin/Admin.vue')
+//const Books = () => import('@/components/books/Books')
+//const BooksSearching = () => import('@/components/reading-club/BooksSearching.vue')
+//const Home = () => import('@/components/home/Home')
+//const Login = () => import('@/components/login/Login')
+//const User = () => import('@/components/user/User')
+//const ReadingClub = () => import('@/components/reading-club/ReadingClub')
+//const Solicitations = () => import('@/components/reading-club/Solicitations')
 
-const router = new Router({
+const routes = [
+    {
+        name: 'home',
+        path: '/home',
+        component: Home
+    },
+    {
+        name: 'books',
+        path: '/meus-livros',
+        component: Books
+    },
+    {
+        name: 'booksSearching',
+        path: '/buscar-livros',
+        component: BooksSearching
+    },
+    {
+        name: 'readingClub',
+        path: '/clube-da-leitura',
+        component: ReadingClub
+    },
+    {
+        name: 'solicitations',
+        path: '/solicitacoes',
+        component: Solicitations
+    },
+    {
+        name: 'user',
+        path: '/meus-dados',
+        component: User
+    },
+    {
+        name: 'login',
+        path: '/',
+        component: Login
+    },
+]
+
+const router = new VueRouter({
     mode: 'history',  
     //para configurar o servidor com mode: history, ver: https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
     //https://router.vuejs.org/guide/essentials/history-mode.html
-    
-    routes: [
-        {
-            name: 'login',
-            path: '/',
-            components: {
-                default: Login,
-                //register: Register
-            }
-        },
-        {
-            name: 'sobre',
-            path: '/sobre',
-            components: {
-                default: Sobre,
-                // appBar: AppBar,
-                // content: Content,
-                // footer: Footer,
-                // header: Header,
-                // menu: Menu
-            }
-        },
-        {
-            name: 'livros',
-            path: '/livros',
-            components: {
-                default: Books,
-                // appBar: AppBar,
-                // content: Content,
-                // footer: Footer,
-                // header: Header,
-                // menu: Menu
-            }
-        },
-        {
-            name: 'usuario',
-            path: '/usuario',
-            components: {
-                default: User,
-                // appBar: AppBar,
-                // content: Content,
-                // footer: Footer,
-                // header: Header,
-                // menu: Menu
-            }
-        },
-        {
-            name: 'clube-da-leitura',
-            path: '/clube-da-leitura',
-            components: {
-                default: ReadingClub,
-                // appBar: AppBar,
-                // content: Content,
-                // footer: Footer,
-                // header: Header,
-                // menu: Menu
-            }
-        },
-    ]
+    routes
+    // scrollBehavior(to, from, savedPosition) {
+    //     if(savedPosition) {
+    //         return savedPosition
+    //     } else if(to.hash) {
+    //         return  { selector: to.hash}
+    //     } else {
+    //         return { x: 0, y: 0}
+    //     }
+    // },
+})
+
+router.beforeEach((to, from, next) => {
+    console.log('beforeEach antes das rotas - GLOBAL', to, from)
+    next()
 })
 
 export default router

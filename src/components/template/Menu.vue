@@ -12,7 +12,6 @@
           <v-img src=""></v-img>
         </v-list-item-avatar>
          <v-list-item-title>{{ user.username }}</v-list-item-title> -->
-
         <v-btn
           icon
           @click.stop="mini = !mini"
@@ -20,6 +19,12 @@
           <v-icon v-if="mini">mdi-chevron-down</v-icon>
           <v-icon v-if="!mini">mdi-chevron-left</v-icon>
         </v-btn>
+        <v-list-item-title
+          v-if="mini === false"
+          class="ml-7"
+        >
+          {{ currentUser.username }}
+        </v-list-item-title>
       </v-list-item>
 
       <v-divider></v-divider>     
@@ -41,21 +46,32 @@
 <script>
 
 export default {
-    data() {
-        return {
-            itemsMenu: [
-                {title: 'Sobre', icon: 'mdi-view-dashboard', link: '/sobre'},
-                {title: 'Meus dados', icon: 'mdi-card-account-details', link: '/usuario'},
-                {title: 'Meus livros', icon: 'mdi-bookshelf', link: '/livros'},
-                {title: 'Clube da leitura', icon: 'mdi-arrange-bring-to-front', link: '/clube-da-leitura'}
-            ],
-            mini: true,
-            drawer: true,
-        }
+  name: 'Menu',
+  data() {
+    return {
+      itemsMenu: [   
+        {title: 'Sobre', icon: 'mdi-view-dashboard', link: '/home'},
+        {title: 'Buscar Livros', icon: 'mdi-cloud-search-outline', link: '/buscar-livros'},
+        {title: 'Solicitações', icon: 'mdi-bell', link: '/solicitacoes'},
+        {title: 'Meus dados', icon: 'mdi-card-account-details', link: '/meus-dados'},
+        {title: 'Meus livros', icon: 'mdi-bookshelf', link: '/meus-livros'}
+      ],
+      mini: false,
+      drawer: true,
+      currentUser: {
+        completeName: 'José Maria',
+        username: 'ze_maria',
+        cpf: '12345678900',
+        email: 'josemaria@email.com',
+        phone: '48987654321',
+        password:'123'
+      },
+    }
   }
 }
 </script>
 
 <style>
-
+  
 </style>
+

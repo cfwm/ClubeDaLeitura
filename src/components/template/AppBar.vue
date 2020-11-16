@@ -1,9 +1,19 @@
 <template>
-    <v-app-bar app class="d-flex align-center justify-center">
-        <v-toolbar-title class="headline text-uppercase">
-				<span>Clube da Leitura </span>
-				<!-- <span class="font-weight-light">Catálogo de livros e gerenciador de empréstimos</span> -->
-        </v-toolbar-title>
+    <v-app-bar app class="d-flex justify-center">
+       <v-col class="">
+         <v-toolbar-title>Clube da Leitura </v-toolbar-title>
+       </v-col>
+       <!-- <span class="font-weight-light">Catálogo de livros e gerenciador de empréstimos</span> -->
+      <v-col>
+        <v-btn
+        icon
+        @click="logout"
+      >
+         <v-icon
+         >{{ logoutIcon }}
+       </v-icon>
+      </v-btn>
+      </v-col>
     </v-app-bar>
 </template>
 
@@ -11,6 +21,21 @@
 
 
 export default {
+  name: 'AppBar',
+  props: {validatingToken: [Boolean]},
+  data() {
+    return {
+      logoutIcon: 'mdi-logout-variant',
+    }
+  },
+  methods: {
+    logout() {
+      //localStorage.removeItem(userKey)
+      this.validatingToken = false
+      this.$emit('validatingTokenChange', this.validatingToken)
+      this.$router.push({name: 'login'})
+    }
+  }
 
 }
 </script>

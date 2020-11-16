@@ -6,12 +6,16 @@
         <h1 class="title">
             {{ title }}
         </h1>
+        <v-btn
+            @click="'logout'"
+        >Logout
+        </v-btn>
     </header>    
 </template>
 
 <script>
 export default {
-    name: 'Header',
+    //name: 'Header',
     props: {
         title: String,
         hideToggle: Boolean
@@ -19,6 +23,11 @@ export default {
     computed: {
         icon() {
             return "fa-angle-left"
+        }
+    },
+    methods: {
+        logout() {
+            this.$router.push({name: 'Login'})
         }
     }
 }
