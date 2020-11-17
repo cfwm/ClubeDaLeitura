@@ -9,7 +9,7 @@
       :single-expand="singleExpand"
       :expanded.sync="expanded"
       item-key="title"
-
+      show-expand
     >
       <template v-slot:top>
         <v-toolbar
@@ -257,6 +257,7 @@
       books: [],
       editedBookIndex: -1,
       editedBook: {
+        //availability: '',
         author: '',
         category: '',
         edition: '',
@@ -267,6 +268,7 @@
         title: ''
       },
       defaultBook: {
+        //availability: '',
         author: '',
         category: '',
         edition: '',

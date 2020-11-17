@@ -35,15 +35,15 @@
                         <p>Login</p>
                     </v-card-title>
                     <v-card-text>
-                        <row>
+                        <v-row>
                             <v-col>
                                 <v-text-field
                                     label="Nome de Usuário ou E-mail"
                                     color="green"
                                 ></v-text-field>
                             </v-col>
-                        </row>
-                        <row>
+                        </v-row>
+                        <v-row>
                             <v-col>
                                 <v-text-field
                                     label="Senha"
@@ -55,7 +55,7 @@
                                     @click:append="showPassword = !showPassword"
                                 ></v-text-field>
                             </v-col>
-                        </row>
+                        </v-row>
                     </v-card-text>
                     <v-card-actions class="d-flex justify-center flex-column">
                         <v-row>

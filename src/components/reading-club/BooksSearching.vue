@@ -30,12 +30,8 @@
           <td colspan="4"></td>
         </tr>
       </template>
-
-       <template v-slot:item.actions="{ item }">    
-        <v-dialog
-        v-model="dialogSeeBook" max-width="500px"
-      >
-        <template v-slot:activator="{ on, attrs }">
+      
+      <template v-slot:item.actions="{ item }">    
         <v-icon
           small
           class="mr-2"
@@ -45,52 +41,6 @@
         >
           mdi-magnify-plus-outline 
         </v-icon>
-        </template>
-        <v-card>
-            <v-row>
-              <p>{{selectedBook.title}}</p>
-            </v-row>
-            <v-row>
-              <p>{{selectedBook.author}}</p>
-            </v-row>
-            <v-row>
-              <p>{{selectedBook.overview}}</p>
-            </v-row>
-            <v-row>
-              <p>{{selectedBook.category}}</p>
-            </v-row>
-            <v-row>
-              <p>{{selectedBook.publisher}}</p>
-            </v-row>
-            <v-row>
-              <p>{{selectedBook.edition}}</p>
-            </v-row>             
-            <v-row>
-              <p>{{selectedBook.language}}</p>
-            </v-row>
-            <v-row>
-            <p>{{selectedBook.pages}}</p>
-            </v-row>
-          <v-card-actions>
-            <v-btn
-              elevation="2"
-              color="purple"
-              style="color:white"
-              @click="closeDialogSeeBook()"
-            >
-            </v-btn>
-            <v-btn
-              elevation="2"
-              color="green"
-              style="color:white"
-              @click="sendSolicitation()"
-            >
-            </v-btn>
-          </v-card-actions>
-          
-
-        </v-card>
-        </v-dialog>
         <v-icon
           small
           @click="sendSolicitation(item)"
@@ -99,6 +49,57 @@
         </v-icon>
       </template>
 
+        <!-- Arrumar esse modal -->
+        <v-dialog
+          v-model="dialogSeeBook" max-width="500px"
+        >
+          <template v-slot:activator="{  }">
+            <v-card>
+              <v-row>
+                <p>{{selectedBook.title}}</p>
+              </v-row>
+              <v-row>
+                <p>{{selectedBook.author}}</p>
+              </v-row>
+              <v-row>
+                <p>{{selectedBook.overview}}</p>
+              </v-row>
+              <v-row>
+                <p>{{selectedBook.category}}</p>
+              </v-row>
+              <v-row>
+                <p>{{selectedBook.publisher}}</p>
+              </v-row>
+              <v-row>
+                <p>{{selectedBook.edition}}</p>
+              </v-row>             
+              <v-row>
+                <p>{{selectedBook.language}}</p>
+              </v-row>
+              <v-row>
+                <p>{{selectedBook.pages}}</p>
+              </v-row>
+              <v-card-actions>
+                <v-btn
+                  elevation="2"
+                  color="purple"
+                  style="color:white"
+                  @click="closeDialogSeeBook()"
+                >
+                </v-btn>
+                <v-btn
+                  elevation="2"
+                  color="green"
+                  style="color:white"
+                  @click="sendSolicitation()"
+                >
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+
+          </template>
+      
+        </v-dialog>
       
     </v-data-table>
   </v-container>
