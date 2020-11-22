@@ -1,6 +1,6 @@
 <template>
     <v-main>
-        <v-container fluid class="d-flex justify-center align-center">
+        <v-container  class="d-flex justify-center align-center">
             <router-view></router-view> 
         </v-container>
     </v-main>   
@@ -15,5 +15,5 @@ export default {
 </script>
 
 <style>
-    
+
 </style>

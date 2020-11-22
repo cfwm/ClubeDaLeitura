@@ -59,9 +59,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    mode: 'history',  
-    //para configurar o servidor com mode: history, ver: https://router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
-    //https://router.vuejs.org/guide/essentials/history-mode.html
+     
     routes
     // scrollBehavior(to, from, savedPosition) {
     //     if(savedPosition) {

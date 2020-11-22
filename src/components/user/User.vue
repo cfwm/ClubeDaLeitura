@@ -1,11 +1,10 @@
 <template>
     <v-container>
-        <v-card
-            elevation="15"
-            class="d-flex flex-column justify-center align-center"
-        >
-            <v-card-title>{{ user.username }}</v-card-title>
-            <v-card-text >
+        <v-card elevation="15" width="250%">
+            <v-card-title class="d-flex justify-center">
+                <p>{{ user.username }}</p>
+            </v-card-title>
+            <v-card-text class="d-flex align-center flex-column">
                 <v-row>Nome de Usuário: <b>{{ user.username }}</b></v-row>
                 <v-row>Nome Completo: <b>{{ user.completeName }}</b></v-row>
                 <v-row>CPF: <b>{{ user.cpf }}</b></v-row>

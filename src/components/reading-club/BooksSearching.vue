@@ -1,107 +1,99 @@
 <template>
   <v-container>
-    <v-data-table
-      :headers="headers"
-      :items="books"
-      item-key="title"
-      class="elevation-1"
-      :search="search"
-      :custom-filter="filterOnlyCapsText"
-    >
-      
-      <template v-slot:top>
-        
+    <v-card elevation="15" width="250%">
+      <v-card-title>
+        <p>Livros Diposníveis</p>
+        <v-spacer></v-spacer>
         <v-text-field
-          v-model="search"
-          label="Search (UPPER CASE ONLY)"
-          class="mx-4"
-        ></v-text-field>
-      </template>
-      <template v-slot:body.append>
-        <tr>
-          <td></td>
-          <td>
-            <v-text-field
-              v-model="calories"
-              type="number"
-              label="Less than"
-            ></v-text-field>
-          </td>
-          <td colspan="4"></td>
-        </tr>
-      </template>
-      
-      <template v-slot:item.actions="{ item }">    
-        <v-icon
-          small
-          class="mr-2"
-          v-bind="attrs"
-          v-on="on"
-          @click="seeBook(item)"
-        >
-          mdi-magnify-plus-outline 
-        </v-icon>
-        <v-icon
-          small
-          @click="sendSolicitation(item)"
-        >
-          mdi-bell-plus
-        </v-icon>
-      </template>
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Pesquisar"
+            single-line
+            class="mx-4"
+            color="purple"
+          ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="books"
+        item-key="title"
+        :search="search"
+        :sort-by="['author', 'category']"
+        :sort-desc="[false, true]"  
+        multi-sort
+      >
+        <template v-slot:item.actions="{ item }">    
+          <v-icon
+            small
+            class="mr-2"
+            v-bind="attrs"
+            v-on="on"
+            @click="seeBook(item)"
+          >
+            mdi-magnify-plus-outline 
+          </v-icon>
+          <v-icon
+            small
+            @click="sendSolicitation(item)"
+          >
+            mdi-bell-plus
+          </v-icon>
+        </template>
 
-        <!-- Arrumar esse modal -->
-        <v-dialog
-          v-model="dialogSeeBook" max-width="500px"
-        >
-          <template v-slot:activator="{  }">
-            <v-card>
-              <v-row>
-                <p>{{selectedBook.title}}</p>
-              </v-row>
-              <v-row>
-                <p>{{selectedBook.author}}</p>
-              </v-row>
-              <v-row>
-                <p>{{selectedBook.overview}}</p>
-              </v-row>
-              <v-row>
-                <p>{{selectedBook.category}}</p>
-              </v-row>
-              <v-row>
-                <p>{{selectedBook.publisher}}</p>
-              </v-row>
-              <v-row>
-                <p>{{selectedBook.edition}}</p>
-              </v-row>             
-              <v-row>
-                <p>{{selectedBook.language}}</p>
-              </v-row>
-              <v-row>
-                <p>{{selectedBook.pages}}</p>
-              </v-row>
-              <v-card-actions>
-                <v-btn
-                  elevation="2"
-                  color="purple"
-                  style="color:white"
-                  @click="closeDialogSeeBook()"
-                >
-                </v-btn>
-                <v-btn
-                  elevation="2"
-                  color="green"
-                  style="color:white"
-                  @click="sendSolicitation()"
-                >
-                </v-btn>
-              </v-card-actions>
-            </v-card>
+          <!-- Arrumar esse modal -->
+          <v-dialog
+            v-model="dialogSeeBook" max-width="500px"
+          >
+            <template v-slot:activator="{  }">
+              <v-card>
+                <v-row>
+                  <p>{{selectedBook.title}}</p>
+                </v-row>
+                <v-row>
+                  <p>{{selectedBook.author}}</p>
+                </v-row>
+                <v-row>
+                  <p>{{selectedBook.overview}}</p>
+                </v-row>
+                <v-row>
+                  <p>{{selectedBook.category}}</p>
+                </v-row>
+                <v-row>
+                  <p>{{selectedBook.publisher}}</p>
+                </v-row>
+                <v-row>
+                  <p>{{selectedBook.edition}}</p>
+                </v-row>             
+                <v-row>
+                  <p>{{selectedBook.language}}</p>
+                </v-row>
+                <v-row>
+                  <p>{{selectedBook.pages}}</p>
+                </v-row>
+                <v-card-actions>
+                  <v-btn
+                    elevation="2"
+                    color="purple"
+                    style="color:white"
+                    @click="closeDialogSeeBook()"
+                  >
+                  </v-btn>
+                  <v-btn
+                    elevation="2"
+                    color="green"
+                    style="color:white"
+                    @click="sendSolicitation()"
+                  >
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
 
-          </template>
-      
-        </v-dialog>
-      
-    </v-data-table>
+            </template>
+        
+          </v-dialog>
+        
+      </v-data-table>
+    </v-card>
   </v-container>
 </template>
 
@@ -109,8 +101,23 @@
   export default {
     data () {
       return {
-        dialogSeeBook: false,
         search: '',
+        headers: [
+          {
+            text: 'Título',
+            align: 'start',
+            sortable: true,
+            value: 'title'
+          },  
+          { text: 'Autor(a)', value: 'author' },
+          { text: 'Categoria', value: 'category' },
+          { text: 'Editora', value: 'publisher' },
+          { text: 'Edição', value: 'edition' },
+          { text: 'Ações', value: 'actions', sortable: false },
+        ],
+
+        dialogSeeBook: false,
+        
         calories: '',
         books: [],
         selectedBookIndex: -1,
@@ -136,29 +143,7 @@
         },
       }
     },
-    computed: {
-      headers () {
-        return [
-          {
-            text: 'Título',
-            align: 'start',
-            sortable: false,
-            value: 'title',
-            filter: value => {
-              if (!this.calories) return true
-
-              return value < parseInt(this.calories)
-            },
-          },  
-          { text: 'Autor(a)', value: 'author' },
-          { text: 'Categoria', value: 'category' },
-          { text: 'Editora', value: 'publisher' },
-          { text: 'Edição', value: 'edition' },
-          { text: 'Ações', value: 'actions', sortable: false },
-        ]
-      },
-    },
-
+    
     watch: {
       dialogSeeBook(val) {
         val || this.closeDialogSeeBook()
@@ -178,13 +163,6 @@
         } catch(fail) {
           console.error(fail)
         }
-      },
-
-      filterOnlyCapsText (value, search) {
-        return value != null &&
-          search != null &&
-          typeof value === 'string' &&
-          value.toString().toUpperCase().toLocaleUpperCase().indexOf(search) !== -1
       },
 
       seeBook(book) {

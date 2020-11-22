@@ -1,22 +1,20 @@
 <template>
-    <v-app-bar app class="d-flex justify-center">
-       <v-col class="">
-         <v-toolbar-title>Clube da Leitura </v-toolbar-title>
-       </v-col>
-       <!-- <span class="font-weight-light">Catálogo de livros e gerenciador de empréstimos</span> -->
-      <v-col>
-        <v-btn
-        icon
-        @click="logout"
-      >
-         <v-icon
-         >{{ logoutIcon }}
-       </v-icon>
-      </v-btn>
+  <v-container>
+    <v-app-bar app>
+      <v-col></v-col>
+      <v-col class="d-flex justify-center">
+        <v-toolbar-title>Clube da Leitura</v-toolbar-title>
+      </v-col>
+      <v-col class="d-flex justify-end">
+        <v-btn 
+          icon
+          @click="logout"
+        ><v-icon>mdi-export</v-icon>
+        </v-btn>
       </v-col>
     </v-app-bar>
+  </v-container>
 </template>
-
 <script>
 
 
