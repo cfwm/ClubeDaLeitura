@@ -37,7 +37,7 @@ export default {
   // },
   data() {
     return {
-      validatingToken: false
+      validatingToken: false,
       //validatingToken deve fazer a validação de usuário e armazenar a resposta em userKey no localStorage
     }
   }

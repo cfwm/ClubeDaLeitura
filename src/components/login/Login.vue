@@ -103,7 +103,9 @@ export default {
                 emailMatch: () => (`O e-mail ou senha informados estão incorretos.`),
             },
             showPassword: false,
-            user: {
+            //Usuários - Users
+            users: [],
+            currentUser: {
                 completeName: '',
                 userName: '',
                 cpf: '',
@@ -118,8 +120,16 @@ export default {
                 email: '',
                 phone: '',
                 passwaord: '',
-            }
+            },
+
+            
+            
+           
         }
+    },
+
+    created() {
+        this.getUsers()
     },
 
     methods: {
@@ -136,6 +146,17 @@ export default {
 
         passwordRecovery() {
             window.alert('Recuperação de Senha')
+        },
+
+        //Usuários
+        async getUsers() {
+            try {
+            this.users = []
+            await this.$http.get('users')
+                .then(res => { this.users = res.data })
+            } catch(fail) {
+            console.error(fail)
+            }
         },
 
     }

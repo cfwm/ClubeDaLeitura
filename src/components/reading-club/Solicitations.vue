@@ -28,22 +28,26 @@
                         ><v-col
                             height="100%" 
                             width="100%"
-                            class="d-flex justify-end mr-1 mb-2"
+                            class="d-flex justify-end mb-3"
                             ><v-btn
-                                height="30px" 
-                                width="150px"
-                                @click="setIsRequester(true)"  
+                                height="150%" 
+                                width="30%"
+                                @click="setIsRequester(true)"
+                                :color="isRequester === true ? 'green' : 'null'"
+                                :style="isRequester === true ? 'color:white;' : 'color:black;'"
                             >Feitas</v-btn>
                         </v-col>
                         <v-col
                             height="100%" 
                             width="100%"
-                            class="d-flex justify-start ml-1 mb-2"
+                            class="d-flex justify-start mb-3"
                         >
                             <v-btn
-                                height="30px" 
-                                width="150px"
-                                @click="setIsRequester(false)" 
+                               height="150%" 
+                                width="30%"
+                                @click="setIsRequester(false)"
+                                :color="isRequester === false ? 'green' : 'null'"
+                                :style="isRequester === false ? 'color:white;' : 'color:black;'" 
                             >Recebidas</v-btn>
                         </v-col>
                     </v-row>
@@ -58,6 +62,8 @@
                                     width="20%"
                                     class="d-flex justify-center"
                                     @click="setStatus('0')"
+                                    :color="status === '0' ? 'purple' : 'null'"
+                                    :style="status === '0' ? 'color:white;' : 'color:black;'"
                                 >Aguardando</v-btn>
                                 <!-- TODO: v-list items -->
                                 <!-- <v-row class="d-flex justify-center"><p>{{ request.book }}</p></v-row> |
@@ -68,6 +74,8 @@
                                     width="20%"
                                     class="d-flex justify-center"
                                     @click="setStatus('1')"
+                                    :color="status === '1' ? 'purple' : 'null'"
+                                    :style="status === '1' ? 'color:white;' : 'color:black;'"
                                 >{{requests.length === 0 ? 'Aceita' : 'Aceitas'}}</v-btn>
                                 <!-- TODO: v-list items -->
                                     <!-- <v-row 
@@ -81,6 +89,8 @@
                                     width="20%" 
                                     class="d-flex justify-center"
                                     @click="setStatus('2')"
+                                    :color="status === '2' ? 'purple' : 'null'"
+                                    :style="status === '2' ? 'color:white;' : 'color:black;'"
                                 >{{ requests.length === 0 ? 'Concluída' : 'Concluídas' }}</v-btn>
                                 <!-- TODO: v-list items -->
                                     <!-- <v-row 
@@ -189,7 +199,7 @@ export default {
             //Solicitações - Requests
             requests: [],
             
-            //displeyedRequest: [],
+            displeyedRequest: [],
             isRequester: true,
             status: '0',
             selectedRequest: {
@@ -233,15 +243,16 @@ export default {
     async created() {
         await this.getRequests()
         await this.sepereRequests()
+        this.showTable()
        
     },
 
-    computed: {
-        displeyedRequest: function() {
-            return this.requests.forEach( item => item
-                .filter(request => request.userRequester === this.isRequester 
-                && request.status === this.status))
-        },
+    // computed: {
+    //     displeyedRequest: function() {
+    //         return this.requests.forEach( item => item
+    //             .filter(request => request.userRequester === this.isRequester 
+    //             && request.status === this.status))
+    //     },
         
         
 
@@ -281,16 +292,35 @@ export default {
         //         .filter(el => el.status === '2')
         // }
 
-    },
+    //},
 
    methods: {
 
-        setIsRegister(val) {
-            this.isRegister = val
+        setIsRequester(val) {
+            this.isRequester = val
+            this.showTable()
         },
 
         setStatus(val) {
             this.status = val
+            this.showTable()
+        },
+
+        showTable() {
+            if(this.isRequester === true){
+                this.displeyedRequest = []
+                this.displeyedRequest = this.requests
+                    .filter(request => request.userRequester === 'maria' 
+                    && request.status === this.status)
+                console.log('ret displeyedRequest', this.displeyedRequest)
+            } else if(this.isRequester === false){
+                this.displeyedRequest = []
+                this.displeyedRequest = this.requests
+                    .filter(request => request.userRequester !== 'maria' 
+                    && request.status === this.status)
+                console.log('ret displeyedRequest', this.displeyedRequest)
+            } 
+            
         },
 
        //Livros
