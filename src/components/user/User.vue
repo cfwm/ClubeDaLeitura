@@ -2,15 +2,15 @@
     <v-container>
         <v-card elevation="15" width="250%">
             <v-card-title class="d-flex justify-center">
-                <p>{{ user.username }}</p>
+                <p>{{ currentUser.username }}</p>
             </v-card-title>
             <v-card-text class="d-flex align-center flex-column">
-                <v-row>Nome de Usuário: <b>{{ user.username }}</b></v-row>
-                <v-row>Nome Completo: <b>{{ user.completeName }}</b></v-row>
-                <v-row>CPF: <b>{{ user.cpf }}</b></v-row>
-                <v-row>E-mail: <b>{{ user.email }}</b></v-row>
-                <v-row>Telefone: <b>{{ user.phone }}</b></v-row>
-                <v-row>Senha: <b>{{ user.password }}</b></v-row>
+                <v-row>Nome de Usuário: <b>{{ currentUser.username }}</b></v-row>
+                <v-row>Nome Completo: <b>{{ currentUser.completeName }}</b></v-row>
+                <v-row>CPF: <b>{{ currentUser.cpf }}</b></v-row>
+                <v-row>E-mail: <b>{{ currentUser.email }}</b></v-row>
+                <v-row>Telefone: <b>{{ currentUser.phone }}</b></v-row>
+                <v-row>Senha: <b>{{ currentUser.password }}</b></v-row>
             </v-card-text>
             <v-card-actions>
             <v-row justify="center">
@@ -116,35 +116,61 @@
 
 <script>
     export default {
-        data () {
-            return {
-                dialog: false,
-                user: {
-                    completeName: 'Carlos Moreira',
-                    username: 'carlos',
-                    cpf: 98745632105,
-                    email: 'carlos@email.com',
-                    phone: 5548999887766,
-                    password: 'a1b2c3d4',
-                },
-                editedUser: {
-                    completeName: '',
-                    username: '',
-                    cpf: '',
-                    email: '',
-                    phone: '',
-                    password:''
-                },
-                defaultUser: {
-                    completeName: '',
-                    username: '',
-                    cpf: '',
-                    email: '',
-                    phone: '',
-                    password:''
-                },
+        computed: {
+            getCurrentUser() {
+                return this.$store.users.getters.getCurrentUser
             }
         },
+
+  
+
+
+        // data () {
+        //     return {
+        //         dialog: false,
+        //         user: {
+        //             completeName: 'Carlos Moreira',
+        //             username: 'carlos',
+        //             cpf: 98745632105,
+        //             email: 'carlos@email.com',
+        //             phone: 5548999887766,
+        //             password: 'a1b2c3d4',
+        //         },
+        //         editedUser: {
+        //             completeName: '',
+        //             username: '',
+        //             cpf: '',
+        //             email: '',
+        //             phone: '',
+        //             password:''
+        //         },
+        //         defaultUser: {
+        //             completeName: '',
+        //             username: '',
+        //             cpf: '',
+        //             email: '',
+        //             phone: '',
+        //             password:''
+        //         },
+        //     }
+        // },
+
+        // async created() {
+        //     await this.getUsers()
+        // },
+
+        // methods: {
+        //      //Usuários
+        //     async getUsers() {
+        //         try {
+        //         this.users = []
+        //         await this.$http.get('users')
+        //             .then(res => { this.users = res.data })
+        //         } catch(fail) {
+        //         console.error(fail)
+        //         }
+        //     },
+        // }
     }
 </script>
 
