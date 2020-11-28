@@ -128,9 +128,9 @@ export default {
         }
     },
 
-    created() {
-        this.getUsers()
-    },
+    // created() {
+    //     this.getUsers()
+    // },
 
     methods: {
         login() {
@@ -149,15 +149,15 @@ export default {
         },
 
         //Usuários
-        async getUsers() {
-            try {
-            this.users = []
-            await this.$http.get('users')
-                .then(res => { this.users = res.data })
-            } catch(fail) {
-            console.error(fail)
-            }
-        },
+        // async getUsers() {
+        //     try {
+        //     this.users = []
+        //     await this.$http.get('users')
+        //         .then(res => { this.users = res.data })
+        //     } catch(fail) {
+        //     console.error(fail)
+        //     }
+        // },
 
     }
 }

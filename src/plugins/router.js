@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import Home from '@/components/home/Home'
 import Books from '@/components/books/Books'
 import BooksSearching from '@/components/reading-club/BooksSearching'
-import ReadingClub from '@/components/reading-club/ReadingClub'
+//import ReadingClub from '@/components/reading-club/ReadingClub'
 import Solicitations from '@/components/reading-club/Solicitations'
 import User from '@/components/user/User'
 import Login from '@/components/login/Login'
@@ -36,11 +36,11 @@ const routes = [
         path: '/buscar-livros',
         component: BooksSearching
     },
-    {
-        name: 'readingClub',
-        path: '/clube-da-leitura',
-        component: ReadingClub
-    },
+    // {
+    //     name: 'readingClub',
+    //     path: '/clube-da-leitura',
+    //     component: ReadingClub
+    // },
     {
         name: 'solicitations',
         path: '/solicitacoes',
@@ -72,10 +72,10 @@ const router = new VueRouter({
     // },
 })
 
-router.beforeEach((to, from, next) => {
-    console.log('beforeEach antes das rotas - GLOBAL', to, from)
-    next()
-})
+// router.beforeEach((to, from, next) => {
+//     console.log('beforeEach antes das rotas - GLOBAL', to, from)
+//     next()
+// })
 
 export default router
 

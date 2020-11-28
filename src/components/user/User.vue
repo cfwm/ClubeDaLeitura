@@ -40,7 +40,7 @@
                                     >
                                         <v-text-field
                                         label="Nome de Usuário"
-                                        v-model="user.username"
+                                        v-model="currentUser.username"
                                         ></v-text-field>
                                     </v-row>
                                     <v-row
@@ -48,7 +48,7 @@
                                     >
                                         <v-text-field
                                         label="Nome Completo"
-                                        v-model="user.completeName"
+                                        v-model="currentUser.completeName"
                                         ></v-text-field>
                                     </v-row>
                                     <v-row
@@ -56,7 +56,7 @@
                                     >
                                         <v-text-field
                                         label="CPF"
-                                        v-model="user.cpf"
+                                        v-model="currentUser.cpf"
                                         ></v-text-field>
                                     </v-row>
 
@@ -65,7 +65,7 @@
                                     >
                                         <v-text-field
                                         label="Email"
-                                        v-model="user.email"
+                                        v-model="currentUser.email"
                                         type="email"
                                         ></v-text-field>
                                     </v-row>
@@ -74,7 +74,7 @@
                                     >
                                         <v-text-field
                                         label="Telefone"
-                                        v-model="user.phone"
+                                        v-model="currentUser.phone"
                                         ></v-text-field>
                                     </v-row>
                                     <v-row
@@ -82,7 +82,7 @@
                                     >
                                         <v-text-field
                                         label="Senha"
-                                        v-model="user.password"
+                                        v-model="currentUser.password"
                                         type="password"
                                         ></v-text-field>
                                     </v-row>
@@ -115,11 +115,45 @@
 </template>
 
 <script>
+    import { mapActions, mapGetters } from 'vuex'
+
     export default {
-        computed: {
-            getCurrentUser() {
-                return this.$store.users.getters.getCurrentUser
+        //name: 'users',
+        data() {
+            return {
+                dialog: false,
+                currentUser: '',
             }
+        },
+
+        filters:{
+        },
+
+        computed: {
+            ...mapGetters({
+                users: 'users/getUsers',
+            }),
+        },
+
+        methods: {
+            ...mapActions({getUsers: 'users/getUsers'}),
+
+            async getCurrentUser() {
+                // let filterstatus = status.filter((item) => {
+                //     return item.name == 'Livre'
+                // });
+                let filteredCurrentUser = await this.users
+                    .filter((user) => {return user.username === 'maria'})
+                this.currentUser = filteredCurrentUser.pop()
+            }     
+        },
+
+        async created() {
+            //console.log('ret users',this.users)
+            await this.getUsers()
+            console.log('ret users',await this.users)
+            this.getCurrentUser()
+            //this.getCurrentUser()
         },
 
   

@@ -64,41 +64,24 @@
                                     @click="setStatus('0')"
                                     :color="status === '0' ? 'purple' : 'null'"
                                     :style="status === '0' ? 'color:white;' : 'color:black;'"
-                                >Aguardando</v-btn>
-                                <!-- TODO: v-list items -->
-                                <!-- <v-row class="d-flex justify-center"><p>{{ request.book }}</p></v-row> |
-                                <v-row class="d-flex justify-center"><p>{{ request.user }}</p></v-row>
-                                <v-row class="d-flex justify-center align-start"></v-row>   -->
-                           <v-btn 
+                                >Aguardando</v-btn
+                            ><v-btn 
                                     height="100%" 
                                     width="20%"
                                     class="d-flex justify-center"
                                     @click="setStatus('1')"
                                     :color="status === '1' ? 'purple' : 'null'"
                                     :style="status === '1' ? 'color:white;' : 'color:black;'"
-                                >{{requests.length === 0 ? 'Aceita' : 'Aceitas'}}</v-btn>
-                                <!-- TODO: v-list items -->
-                                    <!-- <v-row 
-                                        v-for="request in requests" :key="request.book"
-                                        class="d-flex justify-center"    
-                                    >
-                                        <p>{{ request.book }}</p> | <p>{{ request.user }}</p>
-                                    </v-row> -->
-                            <v-btn
+                                >{{requests.length === 0 ? 'Aceita' : 'Aceitas'}}</v-btn
+                            ><v-btn
                                     height="100%" 
                                     width="20%" 
                                     class="d-flex justify-center"
                                     @click="setStatus('2')"
                                     :color="status === '2' ? 'purple' : 'null'"
                                     :style="status === '2' ? 'color:white;' : 'color:black;'"
-                                >{{ requests.length === 0 ? 'Concluída' : 'Concluídas' }}</v-btn>
-                                <!-- TODO: v-list items -->
-                                    <!-- <v-row 
-                                        v-for="request in requests" :key="request.book"
-                                        class="d-flex justify-center"    
-                                    >
-                                        <p>{{ request.book }}</p> | <p>{{ request.user }}</p>
-                                    </v-row> -->
+                                >{{ requests.length === 0 ? 'Concluída' : 'Concluídas' }}</v-btn
+                            >
                         </v-col>
                     </v-row>
                 </v-col>

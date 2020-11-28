@@ -237,6 +237,9 @@
 </template>
 
 <script>
+
+  import { mapActions, mapGetters } from 'vuex'
+
   export default {
     data: () => ({
       dialog: false,
@@ -256,7 +259,7 @@
         { text: 'Edição', value: 'edition' },
         { text: 'Ações', value: 'actions', sortable: false },
       ],
-      books: [],
+      //books: [],
       editedBookIndex: -1,
       editedBook: {
         //availability: '',
@@ -283,10 +286,18 @@
       isNewBook: false,
     }),
 
+    async created() {
+      await this.getBooks()
+      console.log('ret books', await this.books)
+
+    }, 
+
     computed: {
       formTitle () {
         return this.editedBookIndex === -1 ? 'Novo Livro' : 'Editar Livro'
       },
+
+      ...mapGetters({books: 'books/getBooks'}),
     },
 
     watch: {
@@ -298,68 +309,86 @@
       },
     },
 
-    mounted() {
-      this.getBooks()
-    },
 
     methods: {
-      
-      async getBooks() {
-        try {
-          this.books = []
-          await this.$http.get('books')
-            .then(res => { this.books = res.data })
-        } catch(fail) {
-          console.error(fail)
-        }
-      },
-      
-      async addBook() {
-        try {
-          if (this.editedBookIndex > -1) {
-           Object.assign(this.books[this.editedBookIndex], this.editedBook)
-          } else {
-            this.books.push(this.editedBook)
-          }
-          this.isNewBook = true
-          await this.saveBook()
-          this.close()
-        }catch (fail) {
-          console.log(fail)
-        }
-      }, 
+      ...mapActions({getBooks: 'books/getBooks'}),
 
-      async saveBook () {
-        try{
-          const metodo = this.isNewBook === true ? 'post' : 'patch'
-          const finalUrl = this.isNewBook === true ? `/${this.books.length}` : `/${this.editedBookIndex}` 
-          await this.$http[metodo](`/books${finalUrl}`, this.editedBook)
-          this.isNewBook = false
-          //await this.$http[metodo](`/books`, this.books)
-        }catch(fail){
-          console.log(fail)
-        }
-      },
 
       editBook (book) {
-        console.log('ret books', this.books)
-        console.log('ret book', book)
         this.editedBookIndex = this.books.indexOf(book)
         this.editedBook = Object.assign({}, book)
         this.dialog = true
       },
       
-      deleteBook (book) {
-        this.editedBookIndex = this.books.indexOf(book)
-        this.editedBook = Object.assign({}, book)
-        this.dialogDelete = true
-      },
+      // async getBooks() {
+      //   try {
+      //     this.books = []
+      //     await this.$http.get('books')
+      //       .then(res => { this.books = res.data })
+      //   } catch(fail) {
+      //     console.error(fail)
+      //   }
+      // },
+      
+      // async addBook() {
+      //   try {
+      //     if (this.editedBookIndex > -1) {
+      //      Object.assign(this.books[this.editedBookIndex], this.editedBook)
+      //     } else {
+      //       this.books.push(this.editedBook)
+      //     }
+      //     this.isNewBook = true
+      //     await this.saveBook()
+      //     this.close()
+      //   }catch (fail) {
+      //     console.log(fail)
+      //   }
+      // }, 
 
-      async deleteBookConfirm () {
-        this.books.splice(this.editedBookIndex, 1)
-        await this.saveBook()
-        this.closeDelete()
-      },
+      // async saveBook () {
+      //   try{
+      //     const metodo = this.isNewBook === true ? 'post' : 'patch'
+      //     const finalUrl = this.isNewBook === true ? `/${this.books.length}` : `/${this.editedBookIndex}` 
+      //     await this.$http[metodo](`/books${finalUrl}`, this.editedBook)
+      //     this.isNewBook = false
+      //     //await this.$http[metodo](`/books`, this.books)
+      //   }catch(fail){
+      //     console.log(fail)
+      //   }
+      // },
+
+      // addBook() {
+      //   const newBook = {
+      //     title = this.title,
+      //     author = this.author,
+      //     category = this.category,
+      //     publisher = this.publisher,
+      //     edition = this.edition,
+      //     overview = this.overview,
+      //     language = this.language,
+      //     pages = this.pages
+      //   }
+      // },
+
+      // editBook (book) {
+      //   console.log('ret books', this.books)
+      //   console.log('ret book', book)
+      //   this.editedBookIndex = this.books.indexOf(book)
+      //   this.editedBook = Object.assign({}, book)
+      //   this.dialog = true
+      // },
+      
+      // deleteBook (book) {
+      //   this.editedBookIndex = this.books.indexOf(book)
+      //   this.editedBook = Object.assign({}, book)
+      //   this.dialogDelete = true
+      // },
+
+      // async deleteBookConfirm () {
+      //   this.books.splice(this.editedBookIndex, 1)
+      //   await this.saveBook()
+      //   this.closeDelete()
+      // },
       
       closeDelete () {
         this.dialog = !this.dialog
