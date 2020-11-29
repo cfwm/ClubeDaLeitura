@@ -2,7 +2,7 @@
     <v-container>
         <v-card elevation="15" width="250%">
             <v-card-title class="d-flex justify-center">
-                <p>{{ currentUser.username }}</p>
+                <p>Informações de Cadastro</p>
             </v-card-title>
             <v-card-text class="d-flex align-center flex-column">
                 <v-row>Nome de Usuário: <b>{{ currentUser.username }}</b></v-row>
@@ -21,7 +21,7 @@
                 >
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
-                        color="primary"
+                        color="#363636"
                         dark
                         v-bind="attrs"
                         v-on="on"
@@ -39,6 +39,7 @@
                                         cols="12"
                                     >
                                         <v-text-field
+                                        color="#363636"
                                         label="Nome de Usuário"
                                         v-model="currentUser.username"
                                         ></v-text-field>
@@ -47,6 +48,7 @@
                                         cols="12"
                                     >
                                         <v-text-field
+                                        color="#363636"
                                         label="Nome Completo"
                                         v-model="currentUser.completeName"
                                         ></v-text-field>
@@ -55,6 +57,7 @@
                                         cols="12"
                                     >
                                         <v-text-field
+                                        color="#363636"
                                         label="CPF"
                                         v-model="currentUser.cpf"
                                         ></v-text-field>
@@ -64,6 +67,7 @@
                                         cols="12"
                                     >
                                         <v-text-field
+                                        color="#363636"
                                         label="Email"
                                         v-model="currentUser.email"
                                         type="email"
@@ -73,6 +77,7 @@
                                         cols="12"
                                     >
                                         <v-text-field
+                                        color="#363636"
                                         label="Telefone"
                                         v-model="currentUser.phone"
                                         ></v-text-field>
@@ -81,6 +86,7 @@
                                         cols="12"
                                     >
                                         <v-text-field
+                                        color="#363636"
                                         label="Senha"
                                         v-model="currentUser.password"
                                         type="password"
@@ -90,21 +96,22 @@
                         <!-- <small>*indicates required field</small> -->
                         </v-card-text>
                         <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="dialog = false"
-                            >
-                                Cancelar
-                            </v-btn>
-                            <v-btn
-                                color="blue darken-1"
-                                text
-                                @click="dialog = false"
-                            >
-                                Salvar
-                            </v-btn>
+                            <v-col class="d-flex justify-center">
+                                <v-btn
+                                    elevation="2"
+                                    color="purple"
+                                    style="color:white"
+                                    @click="dialog = false"
+                                >Cancelar</v-btn>
+                            </v-col>
+                            <v-col class="d-flex justify-center">
+                                <v-btn
+                                    elevation="2"
+                                    color="green"
+                                    style="color:white"
+                                    @click="dialog = false"
+                                >Salvar</v-btn>
+                            </v-col>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>

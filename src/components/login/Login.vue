@@ -10,19 +10,21 @@
             <v-col>
                 <v-card class="d-flex flex-column justify-center mt-10">
                     <v-card-title class="d-flex justify-center">
-                        <p>Sobre</p>
+                        <h2>Sobre</h2>
                     </v-card-title>
                     <v-card-text class="d-flex justify-center flex-column">
-                        <v-row class="justify-center">Bem vindo ao clube a Leitura! </v-row>
-                        <v-row class="justify-center mt-5">O que é o Clube da Leitura? 
-                            TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO
-                            TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO
-                            TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO
+                        <v-row class="justify-center"><h3>Bem vindo ao Clube a Leitura!</h3></v-row>
+                        <v-row class="justify-center mt-5 ml-5 mr-5">
+                            Este é espaço dedicado ao compartilhamento de conhecimento, 
+                            que busca a aproximação das pessoas através da leitura, e também oferece 
+                            um sistema de registro e empréstimos de livros, para que você nunca mais 
+                            esqueça da pessoa que está com sue livro.
                         </v-row> 
-                        <v-row class="justify-center mt-5">Como funciona? 
-                            TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO
-                            TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO
-                            TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO TEXTOTEXTO
+                        <v-row class="justify-center mt-5 ml-5 mr-5">
+                            O Clube da Leitura é um site de uso gratuito e sem patrocínios, 
+                            elaborado como requisito para a Situação de Aprendizagem do curso técnico
+                            em Desenvolvimento de Sistemas do SENAI-SC CTAI e mantido através de doações.
+                            Para mais informações sobre como colaborar, entre em contato com clube.da.leitura@email.com.
                         </v-row> 
                     </v-card-text>
                 </v-card>
@@ -32,7 +34,7 @@
                     class="d-flex flex-column justify-center mt-10"
                 >
                     <v-card-title class="d-flex justify-center">
-                        <p>Login</p>
+                        <h2>Login</h2>
                     </v-card-title>
                     <v-card-text>
                         <v-row>
@@ -61,9 +63,9 @@
                         <v-row>
                             <v-col>
                                 <v-btn
-                                    elevation="2"
+                                    elevation="10"
                                     width="200px"
-                                    color="green"
+                                    color="#363636"
                                     class="white--text"
                                     @click="login"
                                 >Entrar</v-btn>
@@ -72,13 +74,13 @@
                         <v-row>
                             <v-col>
                                 <v-btn
-                                    elevation="2"
-                                    @click="newRegister"
+                                    elevation="5"
+                                    @click="openDialogAddNewUser"
                                 >Novo Cadastro</v-btn>
                             </v-col>
                             <v-col>
                                 <v-btn
-                                    elevation="2"
+                                    elevation="5"
                                     @click="passwordRecovery"
                                 >Recuperar Senha</v-btn>
                             </v-col>
@@ -88,6 +90,98 @@
             </v-col>
         </v-row>
 
+        <template >
+            <v-dialog
+                v-if="dialogAddNewUser"
+                v-model="dialogAddNewUser" 
+                max-width="50%"
+                persistent
+                :retain-focus="false"
+            >
+                <v-card>
+                    <v-card-title class="d-flex justify-center">
+                        <span>Cadastro de Usuário</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row
+                            cols="12"
+                        >
+                            <v-text-field
+                            color="#363636"
+                            label="Nome de Usuário"
+                            v-model="newUser.username"
+                            ></v-text-field>
+                        </v-row>
+                        <v-row
+                            cols="12"
+                        >
+                            <v-text-field
+                            color="#363636"
+                            label="Nome Completo"
+                            v-model="newUser.completeName"
+                            ></v-text-field>
+                        </v-row>
+                        <v-row
+                            cols="12"
+                        >
+                            <v-text-field
+                            color="#363636"
+                            label="CPF"
+                            v-model="newUser.cpf"
+                            ></v-text-field>
+                        </v-row>
+
+                        <v-row 
+                            cols="12"
+                        >
+                            <v-text-field
+                            color="#363636"
+                            label="Email"
+                            v-model="newUser.email"
+                            type="email"
+                            ></v-text-field>
+                        </v-row>
+                        <v-row
+                            cols="12"
+                        >
+                            <v-text-field
+                            color="#363636"
+                            label="Telefone"
+                            v-model="newUser.phone"
+                            ></v-text-field>
+                        </v-row>
+                        <v-row
+                            cols="12"
+                        >
+                            <v-text-field
+                            color="#363636"
+                            label="Senha"
+                            v-model="newUser.password"
+                            type="password"
+                            ></v-text-field>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-col class="d-flex justify-center">
+                            <v-btn
+                                elevation="2"
+                                color="purple"
+                                style="color:white"
+                                @click="closeDialogAddNewUser"
+                            >Cancelar</v-btn>
+                        </v-col>
+                        <v-col class="d-flex justify-center">
+                            <v-btn
+                                elevation="2"
+                                color="green"
+                                style="color:white"                            
+                                @click="addNewUser"
+                            >Salvar</v-btn>
+                        </v-col>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </template>
     </v-container>    
 </template>
 
@@ -97,6 +191,7 @@ export default {
     props: { validatingToken: [Boolean]},
     data() {
         return {
+            dialogAddNewUser: false,
             rules: {
                 required: value => !!value || 'Required.',
                 min: v => v.length >= 4 || 'A senha deve ter no mínimo 4 caracteres',
@@ -113,6 +208,15 @@ export default {
                 phone: '',
                 passwaord: '',
             },
+
+            newUser: {
+                completeName: '',
+                userName: '',
+                cpf: '',
+                email: '',
+                phone: '',
+                passwaord: '',
+            },
             defaultUser: {
                 completeName: '',
                 userName: '',
@@ -121,16 +225,14 @@ export default {
                 phone: '',
                 passwaord: '',
             },
-
-            
-            
-           
         }
     },
 
-    // created() {
-    //     this.getUsers()
-    // },
+    watch: {
+        dialogAddNewUser(val){
+            val || this.closeDialogAddNewUser()
+        }
+    },
 
     methods: {
         login() {
@@ -140,24 +242,23 @@ export default {
             this.$router.push({name: 'home'})
         },
 
-        newRegister() {
-            window.alert('Novo Cadastro')
+        addNewUser() {
+            window.alert('Cadastro de novo usuário')
+            this.closeDialogAddNewUser()
+        },
+
+        openDialogAddNewUser(){
+            this.dialogAddNewUser = true
+        },
+
+        closeDialogAddNewUser() {
+            this.newUser = Object.assign({}, this.defaultUser)
+            this.dialogAddNewUser = false
         },
 
         passwordRecovery() {
             window.alert('Recuperação de Senha')
-        },
-
-        //Usuários
-        // async getUsers() {
-        //     try {
-        //     this.users = []
-        //     await this.$http.get('users')
-        //         .then(res => { this.users = res.data })
-        //     } catch(fail) {
-        //     console.error(fail)
-        //     }
-        // },
+        },      
 
     }
 }

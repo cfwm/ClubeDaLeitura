@@ -23,6 +23,5 @@ export default new Vuex.Store({
         books,
         requests,
         loans
-
     }
 })

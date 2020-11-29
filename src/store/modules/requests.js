@@ -4,7 +4,7 @@ const resource_uri = 'http://localhost:3000/'
 
 
 export default {
-    namesoaced: true,
+    namespaced: true,
     state: {
         requests: '',
     },

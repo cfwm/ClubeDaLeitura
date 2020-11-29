@@ -5,37 +5,6 @@ const resource_uri = 'http://localhost:3000/'
 export default {
     namespaced: true,
     state: {
-        // users: [
-        //     {
-        //       completeName: "Maria Silva",
-        //       username: "maria",
-        //       cpf: "15987452054",
-        //       email: "maria.silva@email.com",
-        //       phone: "48985235148",
-        //       password: "asdasdasd12@"
-        //     },
-        //     {completeName: "José Oliveira",
-        //       username: "zezinho",
-        //       cpf: "89625157059",
-        //       email: "jose.oliveira@email.com",
-        //       phone: "19980236541",
-        //       password: "dsasdasd133@"
-        //     },
-        //     { completeName: "Helena Arruda",
-        //       username: "helena",
-        //       cpf: "32159874320",
-        //       email: "helena.arruda@email.com",
-        //       phone: "54903652187",
-        //       password: "opmkj4@$"
-        //     },
-        //     { completeName: "Bartolomeu Margarida",
-        //       username: "bart",
-        //       cpf: "78102548951",
-        //       email: "bart.marg@email.com",
-        //       phone: "1196200657415",
-        //       password: "unun23&&"
-        //     },
-        //   ],
         users:'',
     },
 

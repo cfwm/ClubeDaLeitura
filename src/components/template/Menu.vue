@@ -6,12 +6,9 @@
       :mini-variant.sync="mini"
       permanent
       dark
+      hide-overlay
     >
       <v-list-item class="px-2">
-        <!-- <v-list-item-avatar>
-          <v-img src=""></v-img>
-        </v-list-item-avatar>
-         <v-list-item-title>{{ user.username }}</v-list-item-title> -->
         <v-btn
           icon
           @click.stop="mini = !mini"
@@ -51,7 +48,7 @@ export default {
     return {
       itemsMenu: [   
         {title: 'Sobre', icon: 'mdi-view-dashboard', link: '/home'},
-        {title: 'Buscar Livros', icon: 'mdi-cloud-search-outline', link: '/buscar-livros'},
+        {title: 'Buscar livros', icon: 'mdi-cloud-search-outline', link: '/buscar-livros'},
         {title: 'Solicitações', icon: 'mdi-bell', link: '/solicitacoes'},
         {title: 'Meus dados', icon: 'mdi-card-account-details', link: '/meus-dados'},
         {title: 'Meus livros', icon: 'mdi-bookshelf', link: '/meus-livros'}

@@ -30,19 +30,20 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
-                  color="primary"
+                  color="#363636"
                   dark
                   class="mb-2"
                   v-bind="attrs"
                   v-on="on"
                 >
-                  Novo Livro
+                  Adicionar Livro
                 </v-btn>
               </template>
 
               <!-- Formulário de criação/edição de livro -->
               <v-card 
                 elevation="15"
+                width="99%"
               >
                 <v-card-title class="d-flex justify-center">
                   <span class="headline">{{ formTitle }}</span>
@@ -56,6 +57,7 @@
                       md="4"
                     >
                       <v-text-field
+                        color="#363636"
                         v-model="editedBook.title"
                         label="Título"
                       ></v-text-field>
@@ -66,6 +68,7 @@
                       md="4"
                     >
                       <v-text-field
+                        color="#363636"
                         v-model="editedBook.author"
                         label="Autor"
                       ></v-text-field>
@@ -76,6 +79,7 @@
                       md="4"
                     >
                       <v-text-field
+                        color="#363636"
                         v-model="editedBook.category"
                         label="Categoria"
                       ></v-text-field>
@@ -86,6 +90,7 @@
                       md="4"
                     >
                       <v-text-field
+                        color="#363636"
                         v-model="editedBook.publisher"
                         label="Editora"
                       ></v-text-field>
@@ -96,6 +101,7 @@
                       md="4"
                     >
                       <v-text-field
+                        color="#363636"
                         v-model="editedBook.edition"
                         label="Edição"
                       ></v-text-field>
@@ -106,6 +112,7 @@
                       md="4"
                     >
                       <v-text-field
+                        color="#363636"
                         v-model="editedBook.overview"
                         label="Resumo"
                       ></v-text-field>
@@ -116,6 +123,7 @@
                       md="4"
                     >
                       <v-text-field
+                        color="#363636"
                         v-model="editedBook.language"
                         label="Idioma"
                       ></v-text-field>
@@ -126,6 +134,7 @@
                       md="4"
                     >
                       <v-text-field
+                        color="#363636"
                         v-model="editedBook.pages"
                         label="Páginas"
                       ></v-text-field>
@@ -150,7 +159,7 @@
                         elevation="2"
                         color="green"
                         style="color:white"
-                        @click="addBook"
+                        @click="addBook(editedBook)"
                       >
                         Salvar
                       </v-btn>
@@ -311,7 +320,10 @@
 
 
     methods: {
-      ...mapActions({getBooks: 'books/getBooks'}),
+      ...mapActions({
+        getBooks: 'books/getBooks',
+        addBook: 'books/addBook'  
+      }),
 
 
       editBook (book) {
@@ -378,17 +390,17 @@
       //   this.dialog = true
       // },
       
-      // deleteBook (book) {
-      //   this.editedBookIndex = this.books.indexOf(book)
-      //   this.editedBook = Object.assign({}, book)
-      //   this.dialogDelete = true
-      // },
+      deleteBook (book) {
+        this.editedBookIndex = this.books.indexOf(book)
+        this.editedBook = Object.assign({}, book)
+        this.dialogDelete = true
+      },
 
-      // async deleteBookConfirm () {
-      //   this.books.splice(this.editedBookIndex, 1)
-      //   await this.saveBook()
-      //   this.closeDelete()
-      // },
+      async deleteBookConfirm () {
+        this.books.splice(this.editedBookIndex, 1)
+        await this.saveBook()
+        this.closeDelete()
+      },
       
       closeDelete () {
         this.dialog = !this.dialog

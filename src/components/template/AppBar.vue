@@ -3,7 +3,7 @@
     <v-app-bar app>
       <v-col></v-col>
       <v-col class="d-flex justify-center">
-        <v-toolbar-title>Clube da Leitura</v-toolbar-title>
+        <v-toolbar-title><h2>Clube da Leitura</h2></v-toolbar-title>
       </v-col>
       <v-col class="d-flex justify-end">
         <v-btn 

@@ -18,86 +18,134 @@
         :items="books"
         item-key="title"
         :search="search"
-        :sort-by="['author', 'category']"
-        :sort-desc="[false, true]"  
         multi-sort
       >
         <template v-slot:item.actions="{ item }">    
           <v-icon
             small
             class="mr-2"
-            v-bind="attrs"
-            v-on="on"
             @click="seeBook(item)"
           >
             mdi-magnify-plus-outline 
           </v-icon>
           <v-icon
             small
-            @click="sendSolicitation(item)"
+            @click="openDialogSendRequest(item)"
           >
             mdi-bell-plus
           </v-icon>
-        </template>
-
-          <!-- Arrumar esse modal -->
           <v-dialog
-            v-model="dialogSeeBook" max-width="500px"
+            v-if="dialogSeeBook"
+            v-model="dialogSeeBook" 
+            max-width="50%"
+            persistent
+            :retain-focus="false"
           >
-            <template v-slot:activator="{  }">
-              <v-card>
+            <v-card width="99%">
+              <v-card-title class="d-flex justify-center">
+                <span>Livro Selecionado</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row class="d-flex justify-start">
+                    <p><b>Título: </b>{{selectedBook.title}}</p>
+                  </v-row>
+                  <v-row class="d-flex justify-start">
+                    <p><b>Autor(a): </b>{{selectedBook.author}}</p>
+                  </v-row>
+                  <v-row class="d-flex justify-start">
+                    <p><b>Resumo: </b>{{selectedBook.overview}}</p>
+                  </v-row>
+                  <v-row class="d-flex justify-start">
+                    <p><b>Categoria: </b>{{selectedBook.category}}</p>
+                  </v-row>
+                  <v-row class="d-flex justify-start">
+                    <p><b>Editora: </b>{{selectedBook.publisher}}</p>
+                  </v-row>
+                  <v-row class="d-flex justify-start">
+                    <p><b>Edição: </b>{{selectedBook.edition}}</p>
+                  </v-row>
+                  <v-row class="d-flex justify-start">
+                    <p><b>Idioma: </b>{{selectedBook.language}}</p>
+                  </v-row>
+                  <v-row class="d-flex justify-start">
+                    <p><b>Páginas: </b>{{selectedBook.pages}}</p>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
                 <v-row>
-                  <p>{{selectedBook.title}}</p>
+                  <v-col class="d-flex justify-center">
+                    <v-btn
+                      elevation="2"
+                      color="purple"
+                      style="color:white"
+                      @click="closeDialogSeeBook()"
+                    >Fechar
+                    </v-btn>
+                  </v-col>
+                  <v-col class="d-flex justify-center">
+                    <v-btn
+                      elevation="2"
+                      color="green"
+                      style="color:white"
+                      @click="sendRequest()"
+                    >Solicitar
+                    </v-btn>
+                  </v-col>
                 </v-row>
-                <v-row>
-                  <p>{{selectedBook.author}}</p>
-                </v-row>
-                <v-row>
-                  <p>{{selectedBook.overview}}</p>
-                </v-row>
-                <v-row>
-                  <p>{{selectedBook.category}}</p>
-                </v-row>
-                <v-row>
-                  <p>{{selectedBook.publisher}}</p>
-                </v-row>
-                <v-row>
-                  <p>{{selectedBook.edition}}</p>
-                </v-row>             
-                <v-row>
-                  <p>{{selectedBook.language}}</p>
-                </v-row>
-                <v-row>
-                  <p>{{selectedBook.pages}}</p>
-                </v-row>
-                <v-card-actions>
-                  <v-btn
-                    elevation="2"
-                    color="purple"
-                    style="color:white"
-                    @click="closeDialogSeeBook()"
-                  >
-                  </v-btn>
-                  <v-btn
-                    elevation="2"
-                    color="green"
-                    style="color:white"
-                    @click="sendSolicitation()"
-                  >
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-
-            </template>
-        
+              </v-card-actions>
+            </v-card>        
           </v-dialog>
-        
+          <v-dialog
+            v-if="dialogSendRequest"
+            v-model="dialogSendRequest"
+            max-width="50%"
+            persistent
+            :retain-focus="false"
+          >
+            <v-card>
+              <v-card-title class="d-flex justify-center">
+                <span>Solicitação de Empréstimo</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-row>
+                  <v-col class="d-flex justify-center">
+                    <v-btn
+                      elevation="2"
+                      color="purple"
+                      style="color:white"
+                      @click="closeDialogSendRequest()"
+                    >Fechar
+                    </v-btn>
+                  </v-col>
+                  <v-col class="d-flex justify-center">
+                    <v-btn
+                      elevation="2"
+                      color="green"
+                      style="color:white"
+                      @click="sendRequest()"
+                    >Solicitar
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </template>
       </v-data-table>
     </v-card>
   </v-container>
 </template>
 
 <script>
+  import { mapActions, mapGetters } from 'vuex'
+  
   export default {
     data () {
       return {
@@ -117,9 +165,8 @@
         ],
 
         dialogSeeBook: false,
+        dialogSendRequest: false,
         
-        calories: '',
-        books: [],
         selectedBookIndex: -1,
         selectedBook: {
           author: '',
@@ -147,35 +194,53 @@
     watch: {
       dialogSeeBook(val) {
         val || this.closeDialogSeeBook()
+      },
+
+      dialogSendRequest(val) {
+        val || this.closeDialogSendRequest()
       }
     },
 
-    mounted() {
-      this.getBooks()
+    async created() {
+      await this.getBooks()
     },
     
+    computed: {
+      ...mapGetters({
+        books: 'books/getBooks',
+        loans: 'loans/getLoans',
+        requests: 'requests/getRequests',
+        users: 'users/getUsers',
+      })
+    },
+
     methods: {
-      async getBooks() {
-        try {
-          this.books = []
-          await this.$http.get('books')
-            .then(res => { this.books = res.data })
-        } catch(fail) {
-          console.error(fail)
-        }
-      },
+      ...mapActions({
+        getBooks: 'books/getBooks',
+        getLoans: 'loans/getLoans',
+        getRequests: 'requests/getRequests',
+        getUsers: 'users/getUsers',
+        }),
 
       seeBook(book) {
-        console.log('VER LIVRO', this.selectedBook)
         this.selectedBookIndex = this.books.indexOf(book)
         this.selectedBook = Object.assign({}, book)
+        console.log('SEE-BOOK', this.selectedBook, this.selectedBookIndex)
         this.dialogSeeBook = true
+      },
+
+      openDialogSendRequest() {
+        this.dialogSendRequest = true
       },
 
       closeDialogSeeBook() {
         this.selectedBook = Object.assign({}, this.defaultBook)
         this.selectedBookIndex = -1
         this.dialogSeeBook = false
+      },
+
+      closeDialogSendRequest() {
+        this.dialogSendRequest = false
       }
     },
 
