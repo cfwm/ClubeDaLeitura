@@ -143,7 +143,7 @@ export default {
         //         commit('GET_USERS',  res.data).then(console.log(res.data))
         // },
 
-        // async getBooks({commit}) {
+        // async allBooks({commit}) {
         //     const res = await this.$http.get('books')
         //         commit('GET_BOOKS',  res.data).then(console.log(res.data))
         // }

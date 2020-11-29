@@ -8,6 +8,11 @@ export default {
         books: '',
     },
 
+    getters: {
+        getBooks: (state) => state.books,
+    },
+
+    
     mutations: {
         setBooksData(state, newState){
             state.books = newState
@@ -18,9 +23,7 @@ export default {
         },
     },
 
-    getters: {
-        getBooks: (state) => state.books,
-    },
+    
 
     actions: {
         async getBooks(context) {

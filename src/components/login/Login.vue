@@ -162,6 +162,23 @@
                         </v-row>
                     </v-card-text>
                     <v-card-actions>
+                        <!-- **** 
+                            Para participar do Clube da Leitura você deve concordar com os Termos de Uso descritos abaixo.
+                            
+                            Termos de Uso:
+                            1) XXXXX XXXXX XXXXX XXXXXX XXXXXXXXXXX XXXXXXX XXXXXX.
+
+                            2) XXXXX XXXXX XXXXX XXXXXX XXXXXXXXXXX XXXXXXX XXXXXX.
+
+                            3) XXXXX XXXXX XXXXX XXXXXX XXXXXXXXXXX XXXXXXX XXXXXX.
+
+                            4) XXXXX XXXXX XXXXX XXXXXX XXXXXXXXXXX XXXXXXX XXXXXX.
+
+                            5) XXXXX XXXXX XXXXX XXXXXX XXXXXXXXXXX XXXXXXX XXXXXX.
+
+                            6) XXXXX XXXXX XXXXX XXXXXX XXXXXXXXXXX XXXXXXX XXXXXX.
+                            Colocar um checkbox com os termos de uso que ao ser confirmado libera o botão salvar (addNewUser)
+                         **** -->
                         <v-col class="d-flex justify-center">
                             <v-btn
                                 elevation="2"

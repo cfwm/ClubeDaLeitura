@@ -7,8 +7,9 @@
             <v-card-text>
                 <v-row class="d-flex justify-start ml-5 mr-5">
                     <p>
-                        É uma enorme satisfação tê-lo conosco. .... considerações iniciais
-                        .... abaixo estõa descritas as principais funcionalidades do sistema e onde se encontram.
+                        É uma enorme satisfação tê-lo conosco. .... ****** considerações iniciais ******
+                        .... abaixo estão descritas as principais funcionalidades do sistema e onde se encontram.
+
                     </p>
                 </v-row>
                 <v-row class="d-flex justify-start ml-5 mr-5">
@@ -29,17 +30,17 @@
                 </v-row>
                 <v-row class="d-flex justify-start ml-5 mr-5">
                     <p>
-                        No item "Meus dados".
+                        No item "Meus dados" .......
                     </p> 
                 </v-row>
                 <v-row class="d-flex justify-start ml-5 mr-5">
                     <p>
-                        Este espaço é destinado a maiores informações sobre o Clube da Leitura.
+                        E em "Meus livros" .....
                     </p> 
                 </v-row>
                 <v-row class="d-flex justify-start ml-5 mr-5">
                     <p>
-                        Este espaço é destinado a maiores informações sobre o Clube da Leitura.
+                        ***** considerações finais *****
                     </p> 
                 </v-row>
             </v-card-text>
