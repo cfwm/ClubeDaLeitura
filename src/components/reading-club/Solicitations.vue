@@ -116,6 +116,9 @@
 </template>
 
 <script>
+
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
     /*
     -> solicitações/histórico de solicitações;
@@ -123,123 +126,99 @@ export default {
 
     fazer export para ReadingClub.vue
     */
-   data() {
-       return {
-           headers: [
-                {
-                text: 'Solicitante',
-                align: 'start',
-                sortable: false,
-                value: 'userRequester',
-                },
-                { text: 'Livro', align: 'start', value: 'book' },
-                { text: 'Ações', align: 'center', value: 'actions', sortable: false },
-            ],
-           //Livros - Books
-           books: [],
-           solicitedBook: {
-                availability: '',
-                author: '',
-                category: '',
-                edition: '',
-                language: '',
-                overview:'',
-                pages:'',
-                publisher: '',
-                title: ''
-            },
-            defaultBook: {
-                availability: '',
-                author: '',
-                category: '',
-                edition: '',
-                language: '',
-                overview:'',
-                pages:'',
-                publisher: '',
-                title: ''
-            },
-
-            //Usuários - Users
-            users: [],
-            requesterUser: {
-                completeName: '',
-                username: '',
-                cpf: '',
-                email: '',
-                phone: '',
-                password:''
-            },
-            defaultUser: {
-                completeName: '',
-                username: '',
-                cpf: '',
-                email: '',
-                phone: '',
-                password:''
-            },
-            
-            //Solicitações - Requests
-            requests: [],
-            
-            displeyedRequest: [],
-            isRequester: true,
-            status: '0',
-            selectedRequest: {
-                id:'',
-                book:'',
-                userRequester:'',
-                status:'',
-            },
-            defaultRequest: {
-                id:'',
-                book:'',
-                userRequester:'',
-                status:'',
-            },
-
-            //Empréstimos - Loans
-            loans: [],
-            selectedLoan: {
-                id:'',
-                requestId:'',
-                dateBorrow:'',
-                dateDevolution:'',
-            },
-            defaultLoan: {
-                id:'',
-                requestId:'',
-                dateBorrow:'',
-                dateDevolution:'',
-            }
-
-            
-       }
-   },
-
-//    async beforeCreate() {
-//        await this.getBooks()
-//        await this.getUsers()
-//        await this.getRequests()
-//    },
+    data() {
+        return {
+            headers: 
+                [
+                    {
+                        text: 'Solicitante',
+                        align: 'start',
+                        sortable: false,
+                        value: 'userRequester',
+                    },
+                    { text: 'Livro', align: 'start', value: 'book' },
+                    { text: 'Ações', align: 'center', value: 'actions', sortable: false },
+                ],
+        }
+    },
 
     async created() {
+        await this.getBooks()
+        console.log('ret books', this.books)
         await this.getRequests()
-        await this.sepereRequests()
+        console.log('ret requests', this.requests)
+        await this.getUsers()
+        console.log('ret users', this.users)
+        await this.getLoans()
+        console.log('ret loans', this.loans)
+        //await this.sepereRequests()
         this.showTable()
        
     },
 
-    // computed: {
-    //     displeyedRequest: function() {
-    //         return this.requests.forEach( item => item
-    //             .filter(request => request.userRequester === this.isRequester 
-    //             && request.status === this.status))
-    //     },
+    computed: {
+        displeyedRequest: function() {
+            return this.requests.forEach( item => item
+                .filter(request => request.userRequester === this.isRequester 
+                && request.status === this.status))
+        },
         
-        
+        ...mapGetters({
+            books: 'books/getBooks',
+            loans: 'loans/getLoans',
+            requests: 'requests/getRequests',
+            users: 'users/getUsers',
+        })
+    },
 
-        // sentRequests0: function() {
+   methods: {
+
+        ...mapActions({
+            getBooks: 'books/getBooks',
+            getLoans: 'loans/getLoans',
+            getRequests: 'requests/getRequests',
+            getUsers: 'users/getUsers',
+        }),
+
+        setIsRequester(val) {
+            this.isRequester = val
+            this.showTable()
+        },
+
+        setStatus(val) {
+            this.status = val
+            this.showTable()
+        },
+
+        showTable() {
+            if(this.isRequester === true){
+                this.displeyedRequest = []
+                this.displeyedRequest = this.requests
+                    .filter(request => request.userRequester === 'maria' 
+                    && request.status === this.status)
+                console.log('ret displeyedRequest', this.displeyedRequest)
+            } else if(this.isRequester === false){
+                this.displeyedRequest = []
+                this.displeyedRequest = this.requests
+                    .filter(request => request.userRequester !== 'maria' 
+                    && request.status === this.status)
+                console.log('ret displeyedRequest', this.displeyedRequest)
+            } 
+            
+        },
+
+       //Livros
+
+
+        // async sepereRequests() {
+            
+            
+        // },
+    
+
+   }
+}
+      // sentRequests0: function() {
         //     return this.requests
         //         .filter(item => item.userRequester === true)
         //         .filter(el => el.status === '0')
@@ -277,92 +256,88 @@ export default {
 
     //},
 
-   methods: {
 
-        setIsRequester(val) {
-            this.isRequester = val
-            this.showTable()
-        },
+                //Livros - Books
+            //    books: [],
+            //    solicitedBook: {
+            //         availability: '',
+            //         author: '',
+            //         category: '',
+            //         edition: '',
+            //         language: '',
+            //         overview:'',
+            //         pages:'',
+            //         publisher: '',
+            //         title: ''
+            //     },
+            //     defaultBook: {
+            //         availability: '',
+            //         author: '',
+            //         category: '',
+            //         edition: '',
+            //         language: '',
+            //         overview:'',
+            //         pages:'',
+            //         publisher: '',
+            //         title: ''
+            //     },
 
-        setStatus(val) {
-            this.status = val
-            this.showTable()
-        },
+                //Usuários - Users
+                // users: [],
+                // requesterUser: {
+                //     completeName: '',
+                //     username: '',
+                //     cpf: '',
+                //     email: '',
+                //     phone: '',
+                //     password:''
+                // },
+                // defaultUser: {
+                //     completeName: '',
+                //     username: '',
+                //     cpf: '',
+                //     email: '',
+                //     phone: '',
+                //     password:''
+                // },
+                
+                //Solicitações - Requests
+                // requests: [],
+                
+                // displeyedRequest: [],
+                // isRequester: true,
+                // status: '0',
+                // selectedRequest: {
+                //     id:'',
+                //     book:'',
+                //     userRequester:'',
+                //     status:'',
+                // },
+                // defaultRequest: {
+                //     id:'',
+                //     book:'',
+                //     userRequester:'',
+                //     status:'',
+                // },
 
-        showTable() {
-            if(this.isRequester === true){
-                this.displeyedRequest = []
-                this.displeyedRequest = this.requests
-                    .filter(request => request.userRequester === 'maria' 
-                    && request.status === this.status)
-                console.log('ret displeyedRequest', this.displeyedRequest)
-            } else if(this.isRequester === false){
-                this.displeyedRequest = []
-                this.displeyedRequest = this.requests
-                    .filter(request => request.userRequester !== 'maria' 
-                    && request.status === this.status)
-                console.log('ret displeyedRequest', this.displeyedRequest)
-            } 
-            
-        },
-
-       //Livros
-        async getBooks() {
-            try {
-            this.books = []
-            await this.$http.get('books')
-                .then(res => { this.books = res.data })
-            } catch(fail) {
-            console.error(fail)
-            }
-        },
-
-        //Usuários
-        async getUsers() {
-            try {
-            this.users = []
-            await this.$http.get('users')
-                .then(res => { this.users = res.data })
-            } catch(fail) {
-            console.error(fail)
-            }
-        },
-
-        //Solicitações
-        async getRequests() {
-            try {
-            this.requests = []
-            await this.$http.get('requests')
-                .then(res => { this.requests = res.data })
-                console.log(this.requests)
-            } catch(fail) {
-            console.error(fail)
-            }
-        },
-
-        async sepereRequests() {
-            
-            
-        },
-
-        //Empréstimos
-        async getLoans() {
-            try {
-            this.loans = []
-            await this.$http.get('loans')
-                .then(res => { this.loans = res.data })
-                console.log(this.loans)
-            } catch(fail) {
-            console.error(fail)
-            }
-        },
-
-        
-
-   }
-}
+                // //Empréstimos - Loans
+                // loans: [],
+                // selectedLoan: {
+                //     id:'',
+                //     requestId:'',
+                //     dateBorrow:'',
+                //     dateDevolution:'',
+                // },
+                // defaultLoan: {
+                //     id:'',
+                //     requestId:'',
+                //     dateBorrow:'',
+                //     dateDevolution:'',
+                // }
 </script>
 
 <style>
 
 </style>
+
+

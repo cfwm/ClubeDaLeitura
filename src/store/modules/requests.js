@@ -1,52 +1,33 @@
+import axios from 'axios'
+
+const resource_uri = 'http://localhost:3000/'
+
+
 export default {
     namesoaced: true,
     state: {
-        requests: [
-            {  
-                id:"1", 
-                book:"Título do livro 06",
-                userRequester:"maria",
-                status:"1"
-            },             
-            { 
-                id:"2", 
-                book:"Título do livro 04",
-                userRequester:"maria",
-                status:"0"
-            }, 
-            {  
-                id:"3", 
-                book:"Título do livro 07",
-                userRequester:"zezinho",
-                status:"2"
-            },  
-            {
-                id:"4", 
-                book:"Título do livro 09",
-                userRequester:"helena",
-                status:"1"
-            },  
-            {   
-                id:"5", 
-                book:"Título do livro 05",
-                userRequester:"zezinho",
-                status:"0"
-            },  
-            {  
-                id:"6", 
-                book:"Título do livro 02",
-                userRequester:"helena",
-                status:"2"
-            }
-        ],
-    }, 
+        requests: '',
+    },
     
-    getters: {
-        getRequests: (state) => state.requests
+    mutations: {
+        setRequestsData(state, newState){
+            state.requests = newState},
     },
 
-    mutations: {
-        GET_REQUESTS: (state, requests) => state.requests = requests,
+    getters: {
+        getRequests: (state) => state.requests,
     },
+    
+    actions: {
+        async getRequests(context) {
+            await axios.get(resource_uri+'requests')
+                .then(res => {
+                    context.commit('setRequestsData', res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+    }
     
 }

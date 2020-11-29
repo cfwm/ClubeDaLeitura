@@ -25,7 +25,8 @@
             <v-spacer></v-spacer>
             <v-dialog
               v-model="dialog"
-              max-width="500px"
+              max-width="50%"
+              persistent
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -40,122 +41,121 @@
               </template>
 
               <!-- Formulário de criação/edição de livro -->
-              <v-card elevation="15">
-                <v-card-title>
+              <v-card 
+                elevation="15"
+              >
+                <v-card-title class="d-flex justify-center">
                   <span class="headline">{{ formTitle }}</span>
                 </v-card-title>
 
                 <v-card-text>
                   <v-container>
-
-                    <v-row>
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedBook.title"
-                          label="Título"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedBook.author"
-                          label="Autor"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedBook.category"
-                          label="Categoria"
-                        ></v-text-field>
-                      </v-col>
+                    <v-row
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedBook.title"
+                        label="Título"
+                      ></v-text-field>
                     </v-row>
-                    <v-row>
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedBook.publisher"
-                          label="Editora"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedBook.edition"
-                          label="Edição"
-                        ></v-text-field>
-                      </v-col>
+                    <v-row
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedBook.author"
+                        label="Autor"
+                      ></v-text-field>
                     </v-row>
-                    <v-row>
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedBook.overview"
-                          label="Resumo"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedBook.language"
-                          label="Idioma"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedBook.pages"
-                          label="Páginas"
-                        ></v-text-field>
-                      </v-col>
+                    <v-row
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedBook.category"
+                        label="Categoria"
+                      ></v-text-field>
+                    </v-row>
+                    <v-row
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedBook.publisher"
+                        label="Editora"
+                      ></v-text-field>
+                    </v-row>
+                    <v-row
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedBook.edition"
+                        label="Edição"
+                      ></v-text-field>
+                    </v-row>
+                    <v-row
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedBook.overview"
+                        label="Resumo"
+                      ></v-text-field>
+                    </v-row>
+                    <v-row
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedBook.language"
+                        label="Idioma"
+                      ></v-text-field>
+                    </v-row>
+                    <v-row
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-text-field
+                        v-model="editedBook.pages"
+                        label="Páginas"
+                      ></v-text-field>
                     </v-row>
                   </v-container>
                 </v-card-text>
-                
                 <!-- Botões do formulário de criação/edição de livro -->
                 <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    elevation="2"
-                    color="purple"
-                    style="color:white"
-                    @click="close"
-                  >
-                    Cancelar
-                  </v-btn>
-                  <v-btn
-                    elevation="2"
-                    color="green"
-                    style="color:white"
-                    @click="addBook"
-                  >
-                    Salvar
-                  </v-btn>
+                  <v-row>
+                    <v-col class="d-flex justify-center">
+                      <v-btn
+                        elevation="2"
+                        color="purple"
+                        style="color:white"
+                        @click="close"
+                      >
+                        Cancelar
+                      </v-btn>
+                    </v-col>
+                    <v-col class="d-flex justify-center">
+                      <v-btn
+                        elevation="2"
+                        color="green"
+                        style="color:white"
+                        @click="addBook"
+                      >
+                        Salvar
+                      </v-btn>
+                    </v-col>
+                  </v-row>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -211,9 +211,9 @@
         <template v-slot:expanded-item="{ headers, item }">
           <td :colspan="headers.length">
             <p></p>
-            <p><b>Descrição: </b>{{ item.overview }}</p>
-            <p><b>Idioma: </b>{{ item.language }}</p>
-            <p><b>Páginas: </b>{{ item.pages }}</p>
+            <p class="ml-15 pl-15"><b>Descrição: </b>{{ item.overview }}</p>
+            <p class="ml-15 pl-15"><b>Idioma: </b>{{ item.language }}</p>
+            <p class="ml-15 pl-15"><b>Páginas: </b>{{ item.pages }}</p>
           </td>
         </template>
 
@@ -283,7 +283,7 @@
         publisher: '',
         title: ''
       },
-      isNewBook: false,
+      //isNewBook: false,
     }),
 
     async created() {

@@ -126,9 +126,6 @@
             }
         },
 
-        filters:{
-        },
-
         computed: {
             ...mapGetters({
                 users: 'users/getUsers',
@@ -136,7 +133,9 @@
         },
 
         methods: {
-            ...mapActions({getUsers: 'users/getUsers'}),
+            ...mapActions({
+                getUsers: 'users/getUsers'
+            }),
 
             async getCurrentUser() {
                 // let filterstatus = status.filter((item) => {

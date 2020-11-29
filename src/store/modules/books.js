@@ -13,7 +13,9 @@ export default {
     },
 
     mutations: {
-        setBooksData: (state, newState) => state.books = newState,
+        setBooksData(state, newState){
+            state.books = newState
+        },
         // ADD_BOOK: (state, newBook) => state.books.push(newBook),
         // EDIT_BOOK: (state, editedBook) => state.books
         //     .map(book => {
@@ -48,8 +50,12 @@ export default {
     actions: {
         async getBooks(context) {
             await axios.get(resource_uri+'books')
-                .then(res => context.commit('setBooksData', res.data))
-                .catch(err => console.log(err))
+                .then(res => {
+                    context.commit('setBooksData', res.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
         // addLoan: {
         //     root: true,
