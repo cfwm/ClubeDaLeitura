@@ -4,30 +4,36 @@ const resource_uri = 'http://localhost:3000/'
 
 export default {
     namespaced: true,
-    state: {
-        loans: '',
-    },
-
-    mutations: {
-        setLoansData(state, newState){
-            state.loans = newState},
-    },
-
-    getters: {
-        getLoans: (state) => state.loans
-    },
-
+    
     actions: {
         async getLoans(context) {
             await axios.get(resource_uri+'loans')
                 .then(res => {
-                    context.commit('setLoansData', res.data)
+                    context.commit('GET_LOANS', res.data)
                 })
                 .catch(err => {
                     console.log(err)
                 })
         }
-        // addLoan: {
+    },
+
+    mutations: {
+        GET_LOANS(state, newState){
+            state.loans = newState},
+    },
+
+    state: {
+        loans: '',
+    },
+
+    getters: {
+        getLoans: (state) => state.loans
+    },
+    
+}
+
+
+// addLoan: {
         //     root: true,
         //     handler({ commit }, loan) {
         //         setTimeout(() => {
@@ -35,5 +41,3 @@ export default {
         //         }, 1000)
         //     }
         // }
-    }
-}

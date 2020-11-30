@@ -4,18 +4,6 @@ const resource_uri = 'http://localhost:3000/'
 
 export default {
     namespaced: true,
-    state: {
-        users:'',
-    },
-
-    mutations: {
-        setUserData(state, newState){
-          state.users = newState},
-    },
-
-    getters: {
-        getUsers: state => state.users
-    },
 
     actions: {
         async getUsers(context) {
@@ -26,9 +14,24 @@ export default {
                 .catch(err => {
                     console.log(err)
                 })
-        },
+        },     
+    },
 
-        // editUser: {
+    mutations: {
+        setUserData(state, newState){
+          state.users = newState},
+    },
+
+    state: {
+        users:'',
+    },
+
+    getters: {
+        getUsers: state => state.users
+    },
+}
+
+            // editUser: {
         //     root: true,
         //     handler({ commit }, currentUser) {
         //         setTimeout(() => {
@@ -54,12 +57,7 @@ export default {
         //         alert("erro ao carregar quartos" + err)
          
         //     })
-        // },
-
-
-        
-    }
-   
+        // },   
 
         //mutations: {
         //EDIT_CURRENT_USER
@@ -147,9 +145,4 @@ export default {
         //     const res = await this.$http.get('books')
         //         commit('GET_BOOKS',  res.data).then(console.log(res.data))
         // }
-    // },
-    
-}
-
-
-  
+    // }, 

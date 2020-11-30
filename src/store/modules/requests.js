@@ -5,18 +5,6 @@ const resource_uri = 'http://localhost:3000/'
 
 export default {
     namespaced: true,
-    state: {
-        requests: '',
-    },
-    
-    mutations: {
-        setRequestsData(state, newState){
-            state.requests = newState},
-    },
-
-    getters: {
-        getRequests: (state) => state.requests,
-    },
     
     actions: {
         async getRequests(context) {
@@ -28,6 +16,19 @@ export default {
                     console.log(err)
                 })
         }
-    }
-    
+    },
+
+    mutations: {
+        setRequestsData(state, newState){
+            state.requests = newState},
+    },
+
+    state: {
+        requests: '',
+    },
+
+    getters: {
+        getRequests: (state) => state.requests,
+    },
+
 }

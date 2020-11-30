@@ -159,7 +159,7 @@
                         elevation="2"
                         color="green"
                         style="color:white"
-                        @click="addBook(editedBook)"
+                        @click="addBook()"
                       >
                         Salvar
                       </v-btn>
@@ -297,7 +297,9 @@
 
     async created() {
       await this.getBooks()
-      console.log('ret books', await this.books)
+      console.log('created books', await this.books)
+      //console.log('created book id 1',await this.bookById(1))
+      console.log('books.length', this.books.length)
 
     }, 
 
@@ -306,7 +308,11 @@
         return this.editedBookIndex === -1 ? 'Novo Livro' : 'Editar Livro'
       },
 
-      ...mapGetters({books: 'books/getBooks'}),
+      ...mapGetters({
+        books: 'books/getBooks',
+        bookById: 'books/getBookById',       
+
+      }),
     },
 
     watch: {
@@ -322,7 +328,7 @@
     methods: {
       ...mapActions({
         getBooks: 'books/getBooks',
-        addBook: 'books/addBook'  
+        saveBook: 'books/saveBook'  
       }),
 
 
@@ -331,6 +337,23 @@
         this.editedBook = Object.assign({}, book)
         this.dialog = true
       },
+
+      async addBook() {
+        try {
+          if (this.editedBookIndex > -1) {
+           //Object.assign(this.books[this.editedBookIndex], this.editedBook)
+          } else {
+            //this.editedBook.id = this.books.length++
+            await this.saveBook(this.editedBook)
+            console.log('ret editedBook', this.editedBook)
+            //this.books.push(this.editedBook)
+          }
+        }catch (fail) {
+          console.log(fail)
+        }
+        await this.getBooks()
+        this.dialog = false
+      }, 
       
       // async getBooks() {
       //   try {
@@ -342,20 +365,7 @@
       //   }
       // },
       
-      // async addBook() {
-      //   try {
-      //     if (this.editedBookIndex > -1) {
-      //      Object.assign(this.books[this.editedBookIndex], this.editedBook)
-      //     } else {
-      //       this.books.push(this.editedBook)
-      //     }
-      //     this.isNewBook = true
-      //     await this.saveBook()
-      //     this.close()
-      //   }catch (fail) {
-      //     console.log(fail)
-      //   }
-      // }, 
+      
 
       // async saveBook () {
       //   try{
