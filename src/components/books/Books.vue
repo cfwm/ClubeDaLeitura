@@ -17,11 +17,6 @@
             flat
           >
             <v-toolbar-title>Meus Livros</v-toolbar-title>
-            <!-- <v-divider
-              class="mx-4"
-              inset
-              vertical
-            ></v-divider> -->
             <v-spacer></v-spacer>
             <v-dialog
               v-model="dialog"
@@ -159,7 +154,7 @@
                         elevation="2"
                         color="green"
                         style="color:white"
-                        @click="addBook()"
+                        @click="addUpdateBook()"
                       >
                         Salvar
                       </v-btn>
@@ -210,7 +205,7 @@
           </v-icon>
           <v-icon
             small
-            @click="deleteBook(item)"
+            @click="openDialogDeleteBook(item)"
           >
             mdi-delete
           </v-icon>
@@ -228,12 +223,6 @@
 
         <!-- Tabela de listagem de livros / sem livros cadastrados -->
         <template v-slot:no-data>
-          <!-- <v-btn
-            color="primary"
-            @click="initialize"
-          >
-            Reset
-          </v-btn> -->
           <v-container>
             <v-row >
               Você não possui livros cadastrados.
@@ -259,7 +248,6 @@
         {
           text: 'Título',
           align: 'start',
-          sortable: false,
           value: 'title',
         },
         { text: 'Autor(a)', value: 'author' },
@@ -268,10 +256,10 @@
         { text: 'Edição', value: 'edition' },
         { text: 'Ações', value: 'actions', sortable: false },
       ],
-      //books: [],
-      editedBookIndex: -1,
       editedBook: {
-        //availability: '',
+        id:null,
+        ownerId: 1,
+        loanId: null,
         author: '',
         category: '',
         edition: '',
@@ -282,7 +270,9 @@
         title: ''
       },
       defaultBook: {
-        //availability: '',
+        id:null,
+        ownerId: null,
+        loanId: null,
         author: '',
         category: '',
         edition: '',
@@ -291,21 +281,19 @@
         pages:'',
         publisher: '',
         title: ''
-      },
-      //isNewBook: false,
+      },        
     }),
 
     async created() {
       await this.getBooks()
       console.log('created books', await this.books)
-      //console.log('created book id 1',await this.bookById(1))
       console.log('books.length', this.books.length)
 
     }, 
 
     computed: {
       formTitle () {
-        return this.editedBookIndex === -1 ? 'Novo Livro' : 'Editar Livro'
+        return this.editedBook.id < 1 ? 'Cadastrar Livro' : 'Editar Livro'
       },
 
       ...mapGetters({
@@ -328,26 +316,20 @@
     methods: {
       ...mapActions({
         getBooks: 'books/getBooks',
-        saveBook: 'books/saveBook'  
+        saveBook: 'books/saveBook',
+        deleteBook: 'books/deleteBook'  
       }),
 
 
-      editBook (book) {
-        this.editedBookIndex = this.books.indexOf(book)
-        this.editedBook = Object.assign({}, book)
+      async editBook (book) {
+        this.editedBook = await Object.assign({}, book)
         this.dialog = true
       },
 
-      async addBook() {
+      async addUpdateBook() {
         try {
-          if (this.editedBookIndex > -1) {
-           //Object.assign(this.books[this.editedBookIndex], this.editedBook)
-          } else {
-            //this.editedBook.id = this.books.length++
             await this.saveBook(this.editedBook)
-            console.log('ret editedBook', this.editedBook)
-            //this.books.push(this.editedBook)
-          }
+            console.log('ret ***addUpdateBook***', this.editedBook)
         }catch (fail) {
           console.log(fail)
         }
@@ -355,73 +337,31 @@
         this.dialog = false
       }, 
       
-      // async getBooks() {
-      //   try {
-      //     this.books = []
-      //     await this.$http.get('books')
-      //       .then(res => { this.books = res.data })
-      //   } catch(fail) {
-      //     console.error(fail)
-      //   }
-      // },
-      
-      
-
-      // async saveBook () {
-      //   try{
-      //     const metodo = this.isNewBook === true ? 'post' : 'patch'
-      //     const finalUrl = this.isNewBook === true ? `/${this.books.length}` : `/${this.editedBookIndex}` 
-      //     await this.$http[metodo](`/books${finalUrl}`, this.editedBook)
-      //     this.isNewBook = false
-      //     //await this.$http[metodo](`/books`, this.books)
-      //   }catch(fail){
-      //     console.log(fail)
-      //   }
-      // },
-
-      // addBook() {
-      //   const newBook = {
-      //     title = this.title,
-      //     author = this.author,
-      //     category = this.category,
-      //     publisher = this.publisher,
-      //     edition = this.edition,
-      //     overview = this.overview,
-      //     language = this.language,
-      //     pages = this.pages
-      //   }
-      // },
-
-      // editBook (book) {
-      //   console.log('ret books', this.books)
-      //   console.log('ret book', book)
-      //   this.editedBookIndex = this.books.indexOf(book)
-      //   this.editedBook = Object.assign({}, book)
-      //   this.dialog = true
-      // },
-      
-      deleteBook (book) {
-        this.editedBookIndex = this.books.indexOf(book)
-        this.editedBook = Object.assign({}, book)
+      async openDialogDeleteBook (book) {
+        this.editedBook = await  Object.assign({}, book)
         this.dialogDelete = true
       },
 
       async deleteBookConfirm () {
-        this.books.splice(this.editedBookIndex, 1)
-        await this.saveBook()
+        try{
+          console.log('deleteBook -> .vue, book id', this.editedBook.id)
+          await this.deleteBook(this.editedBook.id)
+        } catch(fail){
+          console.log(fail)
+        }
         this.closeDelete()
       },
       
-      closeDelete () {
+      async closeDelete () {
         this.dialog = !this.dialog
         this.dialogDelete = false
-        this.editedBook = Object.assign({}, this.defaultBook)
+        this.editedBook = await Object.assign({}, this.defaultBook)
         this.editedBookIndex = -1
       },
 
-      close () {
+      async close () {
         this.dialog = false
-        this.editedBook = Object.assign({}, this.defaultBook)
+        this.editedBook = await Object.assign({}, this.defaultBook)
         this.editedBookIndex = -1
       },
       

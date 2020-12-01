@@ -27,7 +27,8 @@ export default {
     },
 
     getters: {
-        getUsers: state => state.users
+        getUsers: state => state.users,
+        getCurrentUser: state => state.users[0]
     },
 }
 
