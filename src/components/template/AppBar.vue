@@ -16,7 +16,7 @@
   </v-container>
 </template>
 <script>
-
+import ls from 'local-storage'
 
 export default {
   name: 'AppBar',
@@ -35,7 +35,7 @@ export default {
 
   methods: {
     logout() {
-      //localStorage.removeItem(userKey)
+      ls.remove('currentUser')
       this.validatingToken = false
       this.$emit('validatingTokenChange', this.validatingToken)
       this.$router.push({name: 'login'})

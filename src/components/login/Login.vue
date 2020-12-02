@@ -220,8 +220,8 @@ export default {
                 //emailMatch: () => (`O e-mail ou senha informados estão incorretos.`),
             },
             showPassword: false,
+
             //Usuários - Users
-            //users: [],
             currentUser: {
                 completeName: '',
                 userName: '',
@@ -285,12 +285,6 @@ export default {
             setUsers: 'users/setUsers',
             saveUser: 'users/saveUser'
         }),
-        // login() {
-        //     //localStorage.removeItem(userKey)
-        //     this.validatingToken = true
-        //     this.$emit('validatingTokenChange', this.validatingToken)
-        //     this.$router.push({name: 'home'})
-        // },
 
         async login() {
             if(!this.loginData.username){
@@ -300,25 +294,18 @@ export default {
             } else {
                 this.validatingToken = await this.loginVerification(this.loginData.username, this.loginData.password)
                 if(this.validatingToken){
+                    delete this.currentUser.password
                     ls.set('currentUser', this.currentUser)
                     this.$emit('validatingTokenChange', this.validatingToken)
                     this.$router.push({name: 'home'})
                 }
             }
-
-            // maria asdasdasd12@
-
-            // let username = this.loginData.username
-            // console.log(username)
-            // ls.set('currentUsername', username)
-            // let x = ls.get('currentUsername')
-            // console.log(x)
         },
 
         async loginVerification(username, password) {
             try {
                 this.currentUser = await this.getUserByUsername(this.loginData.username)
-
+                
                 if(!this.currentUser){
                     window.alert('Usuário não cadastrado.')
                     return false

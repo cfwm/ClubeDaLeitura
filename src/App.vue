@@ -30,22 +30,15 @@ export default {
   components: {
       Login, AppBar, Content, Footer, Menu
   },
-  // computed: {
-  //   template() {
-      
-  //   }
-  // },
+
   data() {
     return {
       validatingToken: false,
-      //validatingToken deve fazer a validação de usuário e armazenar a resposta em userKey no localStorage
     }
   }
 }
 </script>
 
 <style>
-/* * {
-    font-family: "Roboto", sans-serif;
-  } */
+
 </style>

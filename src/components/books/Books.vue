@@ -286,9 +286,6 @@
 
     async created() {
       await this.getBooks()
-      //console.log('created books', await this.books)
-      //console.log('books.length', this.books.length)
-
     }, 
 
     computed: {
@@ -317,7 +314,7 @@
       ...mapActions({
         getBooks: 'books/getBooks',
         saveBook: 'books/saveBook',
-        deleteBook: 'books/deleteBook'  
+        deleteBook: 'books/deleteBook',
       }),
 
 
@@ -328,8 +325,8 @@
 
       async addUpdateBook() {
         try {
-            await this.saveBook(this.editedBook)
-            console.log('ret ***addUpdateBook***', this.editedBook)
+          await this.saveBook(this.editedBook)
+          console.log('ret ***addUpdateBook***', this.editedBook)
         }catch (fail) {
           console.log(fail)
         }
@@ -346,10 +343,11 @@
         try{
           console.log('deleteBook -> .vue, book id', this.editedBook.id)
           await this.deleteBook(this.editedBook.id)
-          await this.getBooks()
+          
         } catch(fail){
           console.log(fail)
         }
+        await this.getBooks()
         this.closeDelete()
       },
       

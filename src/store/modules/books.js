@@ -4,12 +4,12 @@ const resource_uri = 'http://localhost:3000/'
 
 export default {
     namespaced: true,
-    
+
     actions: {
         async getBooks(context) {
             await axios.get(resource_uri+'books')
                 .then(res => {
-                    context.commit('SET_BOOKS', res.data)
+                    context.commit('GET_BOOKS', res.data)
                 })
                 .catch(err => {
                     console.log(err)
@@ -22,24 +22,20 @@ export default {
                 methodUrl
 
             if(book.id > 0){
-                //book.ownerId = rootGetters.getCurrentUser.id -> tentar fazer com storage
-                //book.ownerId = context.getters ? have to set global getters?
                 method = 'patch'
                 methodUrl = `books/${book.id}`
             } else {
                 method = 'post'
                 methodUrl = 'books'
-                console.log('ID ****saveBook**** id < 1', book.id)
             }
             await axios[method](resource_uri+[methodUrl], book)
-                .then(res => {
-                    console.log('res actions saveBook', res.data)
-                    context.commit('SAVE_BOOK')
-                })
+                .then(context.commit('SAVE_BOOK'))
                     .catch(err => {
                         console.log(err)
                     })
-        },
+                    console.log(book)
+                },
+        
 
         async deleteBook(context, bookId) {
             await axios.delete(resource_uri+`books/${bookId}`)
@@ -52,10 +48,14 @@ export default {
                     })
         }
     },
-    
+
     mutations: {
-        SET_BOOKS(state, newState){
+        GET_BOOKS(state, newState){
             state.books = newState
+        },
+
+        SET_ID_BOOKS(state, newState){
+            state.id_books = newState
         },
 
         SAVE_BOOK(state, newBook){
@@ -68,19 +68,15 @@ export default {
         }
     },
     
-
     state: () => ({
         books: '',
     }),
-
 
     getters: {
         getBooks: (state) => state.books,
         getBookById: (state) => (id) => {
             return state.books.find(book => book.id === id)
         },
-        getBookId: (state) => {
-            return state.books.length+1
-        }
-    },    
+    },
+
 }
