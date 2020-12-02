@@ -26,6 +26,13 @@ export default {
       logoutIcon: 'mdi-logout-variant',
     }
   },
+
+  watch: {
+    validatingToken() {
+          this.validatingToken=!this.validatingToken
+      }
+  },
+
   methods: {
     logout() {
       //localStorage.removeItem(userKey)

@@ -9,8 +9,7 @@ export default {
         async getBooks(context) {
             await axios.get(resource_uri+'books')
                 .then(res => {
-                    console.log('res actions getBooks', res)
-                    context.commit('GET_BOOKS', res.data)
+                    context.commit('SET_BOOKS', res.data)
                 })
                 .catch(err => {
                     console.log(err)
@@ -22,16 +21,15 @@ export default {
                 method,
                 methodUrl
 
-            if(book.id < 1){
+            if(book.id > 0){
                 //book.ownerId = rootGetters.getCurrentUser.id -> tentar fazer com storage
                 //book.ownerId = context.getters ? have to set global getters?
+                method = 'patch'
+                methodUrl = `books/${book.id}`
+            } else {
                 method = 'post'
                 methodUrl = 'books'
                 console.log('ID ****saveBook**** id < 1', book.id)
-            } else {
-                method = 'patch'
-                methodUrl = `books/${book.id}`
-                console.log('red saveBook id >= 1', book)
             }
             await axios[method](resource_uri+[methodUrl], book)
                 .then(res => {
@@ -44,8 +42,7 @@ export default {
         },
 
         async deleteBook(context, bookId) {
-            //TODO: não está funcionando
-            await axios.delete(resource_uri+'books/'+bookId)
+            await axios.delete(resource_uri+`books/${bookId}`)
                 .then(res => {
                     console.log('res actions deleteBook', res.data)
                     context.commit('DELETE_BOOK', bookId)
@@ -53,11 +50,11 @@ export default {
                     .catch(err => {
                         console.log(err)
                     })
-            }
+        }
     },
     
     mutations: {
-        GET_BOOKS(state, newState){
+        SET_BOOKS(state, newState){
             state.books = newState
         },
 

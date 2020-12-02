@@ -286,8 +286,8 @@
 
     async created() {
       await this.getBooks()
-      console.log('created books', await this.books)
-      console.log('books.length', this.books.length)
+      //console.log('created books', await this.books)
+      //console.log('books.length', this.books.length)
 
     }, 
 
@@ -346,6 +346,7 @@
         try{
           console.log('deleteBook -> .vue, book id', this.editedBook.id)
           await this.deleteBook(this.editedBook.id)
+          await this.getBooks()
         } catch(fail){
           console.log(fail)
         }
@@ -356,13 +357,11 @@
         this.dialog = !this.dialog
         this.dialogDelete = false
         this.editedBook = await Object.assign({}, this.defaultBook)
-        this.editedBookIndex = -1
       },
 
       async close () {
         this.dialog = false
         this.editedBook = await Object.assign({}, this.defaultBook)
-        this.editedBookIndex = -1
       },
       
     },

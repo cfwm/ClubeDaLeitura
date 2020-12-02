@@ -40,6 +40,7 @@
                         <v-row>
                             <v-col>
                                 <v-text-field
+                                    v-model.trim="loginData.username"   
                                     label="Nome de Usuário ou E-mail"
                                     color="green"
                                 ></v-text-field>
@@ -48,6 +49,7 @@
                         <v-row>
                             <v-col>
                                 <v-text-field
+                                    v-model.trim="loginData.password"
                                     label="Senha"
                                     color="green"
                                     :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -109,7 +111,7 @@
                             <v-text-field
                             color="#363636"
                             label="Nome de Usuário"
-                            v-model="newUser.username"
+                            v-model.trim="newUser.username"
                             ></v-text-field>
                         </v-row>
                         <v-row
@@ -118,7 +120,7 @@
                             <v-text-field
                             color="#363636"
                             label="Nome Completo"
-                            v-model="newUser.completeName"
+                            v-model.trim="newUser.completeName"
                             ></v-text-field>
                         </v-row>
                         <v-row
@@ -127,7 +129,7 @@
                             <v-text-field
                             color="#363636"
                             label="CPF"
-                            v-model="newUser.cpf"
+                            v-model.trim="newUser.cpf"
                             ></v-text-field>
                         </v-row>
 
@@ -137,7 +139,7 @@
                             <v-text-field
                             color="#363636"
                             label="Email"
-                            v-model="newUser.email"
+                            v-model.trim="newUser.email"
                             type="email"
                             ></v-text-field>
                         </v-row>
@@ -147,7 +149,7 @@
                             <v-text-field
                             color="#363636"
                             label="Telefone"
-                            v-model="newUser.phone"
+                            v-model.trim="newUser.phone"
                             ></v-text-field>
                         </v-row>
                         <v-row
@@ -156,7 +158,7 @@
                             <v-text-field
                             color="#363636"
                             label="Senha"
-                            v-model="newUser.password"
+                            v-model.trim="newUser.password"
                             type="password"
                             ></v-text-field>
                         </v-row>
@@ -203,6 +205,9 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+import ls from 'local-storage'
+
 export default {
     name: 'Login',
     props: { validatingToken: [Boolean]},
@@ -212,18 +217,19 @@ export default {
             rules: {
                 required: value => !!value || 'Required.',
                 min: v => v.length >= 4 || 'A senha deve ter no mínimo 4 caracteres',
-                emailMatch: () => (`O e-mail ou senha informados estão incorretos.`),
+                //emailMatch: () => (`O e-mail ou senha informados estão incorretos.`),
             },
             showPassword: false,
             //Usuários - Users
-            users: [],
+            //users: [],
             currentUser: {
                 completeName: '',
                 userName: '',
                 cpf: '',
                 email: '',
                 phone: '',
-                passwaord: '',
+                password: '',
+                id:'',
             },
 
             newUser: {
@@ -232,7 +238,8 @@ export default {
                 cpf: '',
                 email: '',
                 phone: '',
-                passwaord: '',
+                password: '',
+                id:'',
             },
             defaultUser: {
                 completeName: '',
@@ -240,23 +247,90 @@ export default {
                 cpf: '',
                 email: '',
                 phone: '',
-                passwaord: '',
+                password: '',
+                id:'',
             },
+
+            loginData: {
+                username:'',
+                password:'',
+            },
+            token:'',
         }
+    },
+
+    async created() {
+        await this.setUsers()
     },
 
     watch: {
         dialogAddNewUser(val){
             val || this.closeDialogAddNewUser()
+        },
+
+        validatingToken() {
+            this.validatingToken=!this.validatingToken
         }
     },
 
+    computed: {
+        ...mapGetters({
+            users: 'users/getUsers',
+            getUserByUsername: 'users/getUserByUsername'
+        })
+    },
+    
     methods: {
-        login() {
-            //localStorage.removeItem(userKey)
-            this.validatingToken = true
-            this.$emit('validatingTokenChange', this.validatingToken)
-            this.$router.push({name: 'home'})
+        ...mapActions({
+            setUsers: 'users/setUsers',
+            saveUser: 'users/saveUser'
+        }),
+        // login() {
+        //     //localStorage.removeItem(userKey)
+        //     this.validatingToken = true
+        //     this.$emit('validatingTokenChange', this.validatingToken)
+        //     this.$router.push({name: 'home'})
+        // },
+
+        async login() {
+            if(!this.loginData.username){
+                window.alert('Informe seu nome de usuário para efetuar o login. Se não for cadastrado, clique em "Novo Cadastro".')
+            } else if(!this.loginData.password){
+                window.alert('Informe sua senha para efetuar o login. Se não for cadastrado, clique em "Novo Cadastro".')
+            } else {
+                this.validatingToken = await this.loginVerification(this.loginData.username, this.loginData.password)
+                if(this.validatingToken){
+                    ls.set('currentUser', this.currentUser)
+                    this.$emit('validatingTokenChange', this.validatingToken)
+                    this.$router.push({name: 'home'})
+                }
+            }
+
+            // maria asdasdasd12@
+
+            // let username = this.loginData.username
+            // console.log(username)
+            // ls.set('currentUsername', username)
+            // let x = ls.get('currentUsername')
+            // console.log(x)
+        },
+
+        async loginVerification(username, password) {
+            try {
+                this.currentUser = await this.getUserByUsername(this.loginData.username)
+
+                if(!this.currentUser){
+                    window.alert('Usuário não cadastrado.')
+                    return false
+                } else if (password !== this.currentUser.password) {
+                    window.alert('Senha incorreta.')
+                    return false
+                } else {
+                    return true
+                }
+            } catch(fail) {
+                console.error(fail)
+            }
         },
 
         addNewUser() {
