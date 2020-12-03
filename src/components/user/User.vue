@@ -10,10 +10,9 @@
                 <v-row>CPF: <b>{{ currentUser.cpf }}</b></v-row>
                 <v-row>E-mail: <b>{{ currentUser.email }}</b></v-row>
                 <v-row>Telefone: <b>{{ currentUser.phone }}</b></v-row>
-                <v-row>Senha: <b>{{ currentUser.password }}</b></v-row>
             </v-card-text>
-            <v-card-actions>
-            <v-row justify="center">
+            <v-card-actions class="d-flex flex-column">
+            <v-row class="mb-4">
                 <v-dialog
                 v-model="dialog"
                 persistent
@@ -21,12 +20,11 @@
                 >
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
-                        color="#363636"
-                        dark
-                        v-bind="attrs"
-                        v-on="on"
-                        >
-                        Editar Informações de Cadastro
+                            color="#363636"
+                            dark
+                            v-bind="attrs"
+                            v-on="on"
+                        >Editar Informações de Cadastro
                         </v-btn>
                     </template>
                     <v-card>
@@ -82,16 +80,6 @@
                                         v-model="currentUser.phone"
                                         ></v-text-field>
                                     </v-row>
-                                    <v-row
-                                        cols="12"
-                                    >
-                                        <v-text-field
-                                        color="#363636"
-                                        label="Senha"
-                                        v-model="currentUser.password"
-                                        type="password"
-                                        ></v-text-field>
-                                    </v-row>
                             </v-container>
                         <!-- <small>*indicates required field</small> -->
                         </v-card-text>
@@ -116,21 +104,135 @@
                     </v-card>
                 </v-dialog>
             </v-row>
+            <v-row>
+                <v-btn 
+                    color="#363636"
+                    class="white--text ml-2"
+                    @click="openDialogchangePasswordVerifier"
+                >Alterar Senha</v-btn>
+            </v-row>
         </v-card-actions>
     </v-card>
+
+    <template>
+        <v-dialog
+            v-if="dialogchangePasswordVerifier"
+            v-model="dialogchangePasswordVerifier"
+            max-width="50%"
+            persistent
+            :retain-focus="false"
+        >
+            <v-card>
+                <v-card-title class="d-flex justify-center">
+                    <span>Confirmação de segurança</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-row>
+                        <span>Digite sua senha atual e confirme para prosseguir com a alteração de senha.</span>
+                    </v-row>
+                    <v-row>
+                        <v-text-field
+                            color="#363636"
+                            label="Senha Atual"
+                            v-model.trim="oldPassword"
+                        ></v-text-field>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-col class="d-flex justify-center">
+                        <v-btn
+                            elevation="2"
+                            color="purple"
+                            style="color:white"
+                            @click="closeDialogchangePasswordVerifier"
+                        >Cancelar</v-btn>
+                    </v-col>
+                    <v-col class="d-flex justify-center">
+                        <v-btn
+                            elevation="2"
+                            color="green"
+                            style="color:white"                            
+                            @click="openDialogchangePassword"
+                        >Confirmar</v-btn>
+                    </v-col>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </template>
+
+    <template>
+        <v-dialog
+            v-if="dialogchangePassword"
+            v-model="dialogchangePassword"
+            max-width="50%"
+            persistent
+            :retain-focus="false"
+        >
+            <v-card>
+                <v-card-title class="d-flex justify-center">
+                    <span>Alteração de Senha</span>
+                </v-card-title>
+                <v-card-text>
+                    <v-row>
+                    <span>Digite sua nova senha:</span>
+                    </v-row>
+                    <v-row>
+                        <v-text-field
+                            color="#363636"
+                            label="Nova Senha"
+                            v-model.trim="newPassword"
+                        ></v-text-field>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-col class="d-flex justify-center">
+                        <v-btn
+                            elevation="2"
+                            color="purple"
+                            style="color:white"
+                            @click="closeDialogchangePassword"
+                        >Cancelar</v-btn>
+                    </v-col>
+                    <v-col class="d-flex justify-center">
+                        <v-btn
+                            elevation="2"
+                            color="green"
+                            style="color:white"                            
+                            @click="changePassword"
+                        >Salvar</v-btn>
+                    </v-col>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        
+    </template>
+
     </v-container>
 </template>
 
 <script>
     import { mapActions, mapGetters } from 'vuex'
+    import ls from 'local-storage'
 
     export default {
         //name: 'users',
         data() {
             return {
                 dialog: false,
+                dialogchangePassword: false,
+                dialogchangePasswordVerifier: false,
+                newPassword:'',
+                oldPassword:'',
                 currentUser: '',
+                
             }
+        },
+
+        async created() {
+            await this.getUsers()
+            //console.log('ret users',await this.users)
+            this.getCurrentUser()
         },
 
         computed: {
@@ -141,26 +243,70 @@
 
         methods: {
             ...mapActions({
-                getUsers: 'users/getUsers'
+                getUsers: 'users/getUsers',
             }),
 
-            async getCurrentUser() {
-                // let filterstatus = status.filter((item) => {
-                //     return item.name == 'Livre'
-                // });
-                let filteredCurrentUser = await this.users
-                    .filter((user) => {return user.username === 'maria'})
-                this.currentUser = filteredCurrentUser.pop()
-            }     
+            getCurrentUser() {
+                // let filteredCurrentUser = await this.users
+                //     .filter((user) => {return user.username === 'maria'})
+                // this.currentUser = filteredCurrentUser.pop()
+                let userLS = ls.get('currentUser')
+                this.currentUser = this.users.find(user => user.username === userLS.username)
+            },
+            
+            
+            changePassword(){
+                // let dynamicUser = this.users
+                //     .filter(user => user.username === this.currentUser.username)
+                // let filteredCurrentUser = await this.users
+                //     .filter((user) => {return user.username === 'maria'})
+                // let dynamicUser = filteredCurrentUser.pop()
+                // console.log(dynamicUser)
+                this.closeDialogchangePassword()
+            },
+
+            async openDialogchangePassword(){
+                // let ret
+                // console.log(this.currentUser.id)
+                // await this.$http('users/1')
+                // .then(res => {
+                //     console.log(res)
+                // })
+                //     .catch(err => {
+                //         console.log(err)
+                //     })
+
+
+                
+                // let filteredCurrentUser = await ret
+                //     .filter((user) => {return user.username === 'maria'})
+                //let dynamicUser = filteredCurrentUser.pop()
+     
+                //console.log('ret users', this.users)
+
+
+
+
+                this.dialogchangePassword = true
+            },
+
+            closeDialogchangePassword(){
+                this.newPassword = ''
+                this.dialogchangePassword = false
+                this.closeDialogchangePasswordVerifier()
+            },
+
+            openDialogchangePasswordVerifier(){
+                this.dialogchangePasswordVerifier = true
+            },
+                       
+            closeDialogchangePasswordVerifier(){
+                this.oldPassword = ''
+                this.dialogchangePasswordVerifier = false
+            }
         },
 
-        async created() {
-            //console.log('ret users',this.users)
-            await this.getUsers()
-            console.log('ret users',await this.users)
-            this.getCurrentUser()
-            //this.getCurrentUser()
-        },
+       
 
   
 

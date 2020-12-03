@@ -41,7 +41,7 @@
                             <v-col>
                                 <v-text-field
                                     v-model.trim="loginData.username"   
-                                    label="Nome de Usuário ou E-mail"
+                                    label="Nome de Usuário"
                                     color="green"
                                 ></v-text-field>
                             </v-col>
@@ -179,7 +179,7 @@
                             5) XXXXX XXXXX XXXXX XXXXXX XXXXXXXXXXX XXXXXXX XXXXXX.
 
                             6) XXXXX XXXXX XXXXX XXXXXX XXXXXXXXXXX XXXXXXX XXXXXX.
-                            Colocar um checkbox com os termos de uso que ao ser confirmado libera o botão salvar (addNewUser)
+                            Colocar um checkbox com os termos de uso que ao ser confirmado libera o botão salvar (addNewUserVerifier)
                          **** -->
                         <v-col class="d-flex justify-center">
                             <v-btn
@@ -194,7 +194,7 @@
                                 elevation="2"
                                 color="green"
                                 style="color:white"                            
-                                @click="addNewUser"
+                                @click="addNewUserVerifier"
                             >Salvar</v-btn>
                         </v-col>
                     </v-card-actions>
@@ -224,7 +224,7 @@ export default {
             //Usuários - Users
             currentUser: {
                 completeName: '',
-                userName: '',
+                username: '',
                 cpf: '',
                 email: '',
                 phone: '',
@@ -234,7 +234,7 @@ export default {
 
             newUser: {
                 completeName: '',
-                userName: '',
+                username: '',
                 cpf: '',
                 email: '',
                 phone: '',
@@ -243,7 +243,7 @@ export default {
             },
             defaultUser: {
                 completeName: '',
-                userName: '',
+                username: '',
                 cpf: '',
                 email: '',
                 phone: '',
@@ -320,8 +320,39 @@ export default {
             }
         },
 
-        addNewUser() {
-            window.alert('Cadastro de novo usuário')
+        addNewUserVerifier() {
+            let isUsernameRegistered = this.users
+                .map(user => user.username === this.newUser.username ? true : false)
+                    .reduce((a, b) => a !== b)
+            let isEmailRegistered = this.users
+                .map(user => user.email === this.newUser.email ? true : false)
+                    .reduce((a, b) => a !== b)
+            let isCpfRegistered = this.users
+                .map(user => user.cpf === this.newUser.cpf ? true : false)
+                    .reduce((a, b) => a !== b)
+
+            if(isUsernameRegistered){
+                window.alert('Username já cadastrado.')
+                this.closeDialogAddNewUser()
+            } else if(isEmailRegistered){
+                window.alert('Username já cadastrado.')
+                this.closeDialogAddNewUser()
+            } else if(isCpfRegistered){
+                window.alert('Username já cadastrado.')
+                this.closeDialogAddNewUser()
+            } else {
+                this.addNewUser()
+            }
+        },
+
+        async addNewUser() {
+            try {
+                await this.saveUser(this.newUser)
+                console.log('ret ***saveUser***', this.newUser)
+            }catch (fail) {
+                console.log(fail)
+            }
+            await this.setUsers()
             this.closeDialogAddNewUser()
         },
 
@@ -329,7 +360,7 @@ export default {
             this.dialogAddNewUser = true
         },
 
-        closeDialogAddNewUser() {
+        async closeDialogAddNewUser() {
             this.newUser = Object.assign({}, this.defaultUser)
             this.dialogAddNewUser = false
         },

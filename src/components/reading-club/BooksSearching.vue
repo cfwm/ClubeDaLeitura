@@ -225,7 +225,6 @@
       seeBook(book) {
         this.selectedBookIndex = this.books.indexOf(book)
         this.selectedBook = Object.assign({}, book)
-        console.log('SEE-BOOK', this.selectedBook, this.selectedBookIndex)
         this.dialogSeeBook = true
       },
 

@@ -47,15 +47,12 @@ export default {
                         console.log(err)
                     })
         }
+        
     },
 
     mutations: {
         GET_BOOKS(state, newState){
             state.books = newState
-        },
-
-        SET_ID_BOOKS(state, newState){
-            state.id_books = newState
         },
 
         SAVE_BOOK(state, newBook){
