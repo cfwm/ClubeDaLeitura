@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import ls from 'local-storage'
 
 export default {
   name: 'Menu',
@@ -56,14 +57,25 @@ export default {
       mini: false,
       drawer: true,
       currentUser: {
-        completeName: 'José Maria',
-        username: 'ze_maria',
-        cpf: '12345678900',
-        email: 'josemaria@email.com',
-        phone: '48987654321',
-        password:'123'
+        completeName:'',
+        cpf:'',
+        email:'',
+        id:'',
+        phone:'',
+        username:''
       },
     }
+  },
+
+  async created() {
+      this.getCurrentUser()
+    },
+
+
+  methods: {
+    getCurrentUser() {
+      this.currentUser = ls.get('currentUser')
+    },
   }
 }
 </script>

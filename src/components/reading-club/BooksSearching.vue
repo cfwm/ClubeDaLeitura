@@ -182,12 +182,21 @@
 
         dialogSeeBook: false,
         dialogSendRequest: false,
-
+        currentUser: {
+                completeName:'',
+                cpf:'',
+                email:'',
+                id:'',
+                phone:'',
+                username:''
+            },
         booksToSearch:[],
         
         selectedBook: null,
 
         bookUserOwner: null,
+
+        currentRequest: null,
       }
     },
     
@@ -203,6 +212,7 @@
 
     async beforeMount() {
       await this.setBooks()
+      this.getCurrentUser()
       this.setBooksToSearch()
     },
     
@@ -219,18 +229,41 @@
       ...mapActions({
         setBooks: 'books/setBooks',
         setLoans: 'loans/setLoans',
+        saveRequest: 'requests/saveRequest',
         setRequests: 'requests/setRequests',
         setUsers: 'users/setUsers',
         }),
 
-      sendRequest(){
-        //enviar request com bookId (selectedBook.id) e userRequesterId (bookUserOwner.id)
+      async sendRequest(){
+        this.currentRequest = {
+          bookId: this.selectedBook.id,
+          bookTitle: this.selectedBook.title,
+          userRequesterId: this.currentUser.id,
+          userRequesterUsername: this.currentUser.username,
+          status: 0
+        }
+
+        try {
+          await this.saveRequest(this.currentRequest)
+          window.alert('Seu pedido de empréstimo foi enviado com sucesso. Aguerde o contato do dono do livro através de seu e-mail ou telefone registrado no seu cadastro para combinar o envio do livro assim que sua solicitação for aceita.')
+        } catch(fail) {
+          console.error(fail)
+        }
+
+        this.closeDialogSendRequest()
+        if(this.dialogSeeBook){
+          this.closeDialogSeeBook()
+        }
       },
 
       setBooksToSearch() {
-        let userLS = ls.get('currentUser')
         this.booksToSearch = this.books
-          .filter(book => book.ownerId !== userLS.id)
+          .filter(book => book.ownerId !== this.currentUser.id &&
+            book.isAvailable === true) 
+      },
+
+      getCurrentUser() {
+        this.currentUser = ls.get('currentUser')
       },
 
       openDialogSeeBook(book) {

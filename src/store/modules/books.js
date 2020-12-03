@@ -51,14 +51,14 @@ export default {
                 book = newBook : book)
         },
 
-        // DELETE_BOOK(state, deletedBook){
-        //     state.books = state.books
-        //         .filter(book => book.id !== deletedBook.id)
-        // }
         DELETE_BOOK(state, deletedBook){
-            state.books.map(book => book.id !== deletedBook.id ?
-                book : null)
+            state.books = state.books
+                .filter(book => book.id !== deletedBook.id)
         }
+        // DELETE_BOOK(state, deletedBook){
+        //     state.books.map(book => book.id !== deletedBook.id ?
+        //         book : null)
+        // }
     },
     
     // state: () => ({

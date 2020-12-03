@@ -102,111 +102,108 @@
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
-            </v-row>
-            <v-row>
-                <v-btn 
-                    color="#363636"
-                    class="white--text ml-2"
-                    @click="openDialogchangePasswordVerifier"
-                >Alterar Senha</v-btn>
-            </v-row>
-        </v-card-actions>
-    </v-card>
+                </v-row>
+                <v-row>
+                    <v-btn 
+                        color="#363636"
+                        class="white--text ml-2"
+                        @click="openDialogchangePasswordVerifier"
+                    >Alterar Senha</v-btn>
+                </v-row>
+            </v-card-actions>
+        </v-card>
 
-    <template>
-        <v-dialog
-            v-if="dialogchangePasswordVerifier"
-            v-model="dialogchangePasswordVerifier"
-            max-width="50%"
-            persistent
-            :retain-focus="false"
-        >
-            <v-card>
-                <v-card-title class="d-flex justify-center">
-                    <span>Confirmação de segurança</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-row>
-                        <span>Digite sua senha atual e confirme para prosseguir com a alteração de senha.</span>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            color="#363636"
-                            label="Senha Atual"
-                            v-model.trim="oldPassword"
-                        ></v-text-field>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions>
-                    <v-col class="d-flex justify-center">
-                        <v-btn
-                            elevation="2"
-                            color="purple"
-                            style="color:white"
-                            @click="closeDialogchangePasswordVerifier"
-                        >Cancelar</v-btn>
-                    </v-col>
-                    <v-col class="d-flex justify-center">
-                        <v-btn
-                            elevation="2"
-                            color="green"
-                            style="color:white"                            
-                            @click="openDialogchangePassword"
-                        >Confirmar</v-btn>
-                    </v-col>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </template>
+        <template>
+            <v-dialog
+                v-if="dialogchangePasswordVerifier"
+                v-model="dialogchangePasswordVerifier"
+                max-width="50%"
+                persistent
+                :retain-focus="false"
+            >
+                <v-card>
+                    <v-card-title class="d-flex justify-center">
+                        <span>Confirmação de segurança</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row>
+                            <span>Digite sua senha atual e confirme para prosseguir com a alteração de senha.</span>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                color="#363636"
+                                label="Senha Atual"
+                                v-model.trim="oldPassword"
+                            ></v-text-field>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-col class="d-flex justify-center">
+                            <v-btn
+                                elevation="2"
+                                color="purple"
+                                style="color:white"
+                                @click="closeDialogchangePasswordVerifier"
+                            >Cancelar</v-btn>
+                        </v-col>
+                        <v-col class="d-flex justify-center">
+                            <v-btn
+                                elevation="2"
+                                color="green"
+                                style="color:white"                            
+                                @click="openDialogchangePassword"
+                            >Confirmar</v-btn>
+                        </v-col>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </template>
 
-    <template>
-        <v-dialog
-            v-if="dialogchangePassword"
-            v-model="dialogchangePassword"
-            max-width="50%"
-            persistent
-            :retain-focus="false"
-        >
-            <v-card>
-                <v-card-title class="d-flex justify-center">
-                    <span>Alteração de Senha</span>
-                </v-card-title>
-                <v-card-text>
-                    <v-row>
-                    <span>Digite sua nova senha:</span>
-                    </v-row>
-                    <v-row>
-                        <v-text-field
-                            color="#363636"
-                            label="Nova Senha"
-                            v-model.trim="newPassword"
-                        ></v-text-field>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions>
-                    <v-col class="d-flex justify-center">
-                        <v-btn
-                            elevation="2"
-                            color="purple"
-                            style="color:white"
-                            @click="closeDialogchangePassword"
-                        >Cancelar</v-btn>
-                    </v-col>
-                    <v-col class="d-flex justify-center">
-                        <v-btn
-                            elevation="2"
-                            color="green"
-                            style="color:white"                            
-                            @click="changePassword"
-                        >Salvar</v-btn>
-                    </v-col>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
-        
-    </template>
-
+        <template>
+            <v-dialog
+                v-if="dialogchangePassword"
+                v-model="dialogchangePassword"
+                max-width="50%"
+                persistent
+                :retain-focus="false"
+            >
+                <v-card>
+                    <v-card-title class="d-flex justify-center">
+                        <span>Alteração de Senha</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row>
+                        <span>Digite sua nova senha:</span>
+                        </v-row>
+                        <v-row>
+                            <v-text-field
+                                color="#363636"
+                                label="Nova Senha"
+                                v-model.trim="newPassword"
+                            ></v-text-field>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-col class="d-flex justify-center">
+                            <v-btn
+                                elevation="2"
+                                color="purple"
+                                style="color:white"
+                                @click="closeDialogchangePassword"
+                            >Cancelar</v-btn>
+                        </v-col>
+                        <v-col class="d-flex justify-center">
+                            <v-btn
+                                elevation="2"
+                                color="green"
+                                style="color:white"                            
+                                @click="changePassword"
+                            >Salvar</v-btn>
+                        </v-col>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </template>
     </v-container>
 </template>
 
@@ -215,7 +212,6 @@
     import ls from 'local-storage'
 
     export default {
-        //name: 'users',
         data() {
             return {
                 dialog: false,
@@ -230,8 +226,6 @@
 
         async created() {
             await this.setUsers()
-            
-            //console.log('ret users',await this.users)
             this.getCurrentUser()
         },
 
@@ -248,9 +242,6 @@
             }),
 
             getCurrentUser() {
-                // let filteredCurrentUser = await this.users
-                //     .filter((user) => {return user.username === 'maria'})
-                // this.currentUser = filteredCurrentUser.pop()
                 let userLS = ls.get('currentUser')
                 this.currentUser = this.users
                     .find(user => user.username === userLS.username)

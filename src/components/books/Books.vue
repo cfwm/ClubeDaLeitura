@@ -219,6 +219,7 @@
             <p class="ml-5"><b>Descrição: </b>{{ item.overview }}</p>
             <p class="ml-5"><b>Idioma: </b>{{ item.language }}</p>
             <p class="ml-5"><b>Páginas: </b>{{ item.pages }}</p>
+            <p class="ml-5"><b>Está emprestado: </b>{{ item.isAvailable ? 'Não' : 'Sim' }}</p>
           </td>
         </template>
 
@@ -267,6 +268,7 @@
         author: '',
         category: '',
         edition: '',
+        isAvailable: '',
         language: '',
         overview: '',
         pages: '',
@@ -281,6 +283,7 @@
         author: '',
         category: '',
         edition: '',
+        isAvailable: '',
         language: '',
         overview: '',
         pages: '',
@@ -345,10 +348,8 @@
           }
         } else {
             try {
-              console.log('new book without ownerId', this.editedBook.ownerId)
               let userLS = ls.get('currentUser')
               this.editedBook.ownerId = userLS.id
-              console.log('new book ownerId', this.editedBook.ownerId)
               await this.saveBook(this.editedBook)
             }catch (fail) {
               console.log(fail)

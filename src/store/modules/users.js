@@ -57,7 +57,7 @@ export default {
     getters: {
         getUsers: state => state.users,
         getUserPassword: state => state.userPassword,
-        getCurrentUser: state => state.users[0],
+        //getCurrentUser: state => state.users[0],
         getUserByUsername: (state) => (username) => {
             return state.users.find(user => user.username === username)
         }
