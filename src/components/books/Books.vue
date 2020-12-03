@@ -264,7 +264,6 @@
       editedBook: {
         id: '',
         ownerId: '',
-        loanId: '',
         author: '',
         category: '',
         edition: '',
@@ -279,7 +278,6 @@
       defaultBook: {
         id: '',
         ownerId: '',
-        loanId: '',
         author: '',
         category: '',
         edition: '',

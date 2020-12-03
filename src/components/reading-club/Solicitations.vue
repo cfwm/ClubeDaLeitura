@@ -281,7 +281,6 @@ export default {
                 edition: '',
                 id:'',
                 language: '',
-                loanId:'',
                 overview:'',
                 ownerId:'',
                 pages:'',
@@ -294,13 +293,13 @@ export default {
                 edition: '',
                 id:'',
                 language: '',
-                loanId:'',
                 overview:'',
                 ownerId:'',
                 pages:'',
                 publisher: '',
                 title: ''
             },
+            userBooks:[],
 
             //Usuários
             requestUser: {
@@ -337,6 +336,7 @@ export default {
                 userRequesterUsername:'',
                 status:'',
             },
+            //userMadeRequests:[],
 
             //Empréstimos - Loans
             selectedLoan: {
@@ -409,7 +409,7 @@ export default {
                 this.displeyedRequest = this.requests
                     .filter(request => request.userRequesterId !== this.currentUser.id
                     && request.status === this.status)
-            }  
+            }
         },
 
         async reloadTable() {
