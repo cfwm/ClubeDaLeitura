@@ -7,9 +7,9 @@
             <v-card-text>
                 <v-row class="d-flex justify-start ml-5 mr-5">
                     <p>
-                        É uma enorme satisfação tê-lo conosco. .... ****** considerações iniciais ******
-                        .... abaixo estão descritas as principais funcionalidades do sistema e onde se encontram.
-
+                        É uma enorme satisfação tê-lo conosco! 
+                        Esperamos que desfrute ao máximo dos recursos oferecidos pelo Clube do Livro. 
+                        Abaixo estão descritas as principais funcionalidades do sistema e onde se encontram.
                     </p>
                 </v-row>
                 <v-row class="d-flex justify-start ml-5 mr-5">
@@ -24,23 +24,25 @@
                 </v-row>
                 <v-row class="d-flex justify-start ml-5 mr-5">
                     <p>
-                        Em "Solicitações" há um painel que permite o acompanhamento 
+                        Em "Solicitações" há um painel que permite o acompanhamento e gerenciamento
                         de todos seus pedidos de empréstimo de livro.
                     </p> 
                 </v-row>
                 <v-row class="d-flex justify-start ml-5 mr-5">
                     <p>
-                        No item "Meus dados" .......
+                        No item "Meus dados" estão listadas as informações de cadastro do usuário e está presente um botão para a alteração dessas informações.
                     </p> 
                 </v-row>
                 <v-row class="d-flex justify-start ml-5 mr-5">
                     <p>
-                        E em "Meus livros" .....
+                        E em "Meus livros" ficam todos os livros, e suas respetivas informações, cadastrados pelo usuário. 
+                        É aqui onde estão disponíveis os recursos para cadastro e edição de livros.
                     </p> 
                 </v-row>
                 <v-row class="d-flex justify-start ml-5 mr-5">
                     <p>
-                        ***** considerações finais *****
+                        Quando uma solicitação de empréstimo é aceita, o dono do livro que será emprestado tem acesso aos informações de contato do usuário solicitante
+                        para que possa contatá-lo e, assim, combinarem alguma forma de entrega do livro. 
                     </p> 
                 </v-row>
             </v-card-text>
