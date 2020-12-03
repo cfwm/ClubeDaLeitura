@@ -81,7 +81,6 @@
                                         ></v-text-field>
                                     </v-row>
                             </v-container>
-                        <!-- <small>*indicates required field</small> -->
                         </v-card-text>
                         <v-card-actions>
                             <v-col class="d-flex justify-center">
@@ -97,7 +96,7 @@
                                     elevation="2"
                                     color="green"
                                     style="color:white"
-                                    @click="dialog = false"
+                                    @click="editUser"
                                 >Salvar</v-btn>
                             </v-col>
                         </v-card-actions>
@@ -230,7 +229,8 @@
         },
 
         async created() {
-            await this.getUsers()
+            await this.setUsers()
+            
             //console.log('ret users',await this.users)
             this.getCurrentUser()
         },
@@ -243,7 +243,8 @@
 
         methods: {
             ...mapActions({
-                getUsers: 'users/getUsers',
+                setUsers: 'users/setUsers',
+                saveUser: 'users/saveUser'
             }),
 
             getCurrentUser() {
@@ -251,7 +252,20 @@
                 //     .filter((user) => {return user.username === 'maria'})
                 // this.currentUser = filteredCurrentUser.pop()
                 let userLS = ls.get('currentUser')
-                this.currentUser = this.users.find(user => user.username === userLS.username)
+                this.currentUser = this.users
+                    .find(user => user.username === userLS.username)
+            },
+
+            async editUser(){
+                try {
+                    await this.saveUser(this.currentUser)
+                    console.log('ret ***saveUser***', this.currentUser)
+                } catch (fail) {
+                    console.log(fail)
+                }
+                await this.setUsers()
+                this.dialog = false
+                
             },
             
             

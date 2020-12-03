@@ -4,7 +4,7 @@
       <!-- Tabela listagem de livros -->
       <v-data-table
         :headers="headers"
-        :items="books"
+        :items="userBooks"
         sort-by="title"
         class="elevation-1"
         :single-expand="singleExpand"
@@ -154,7 +154,7 @@
                         elevation="2"
                         color="green"
                         style="color:white"
-                        @click="addUpdateBook()"
+                        @click="addEditBook()"
                       >
                         Salvar
                       </v-btn>
@@ -171,8 +171,7 @@
                   class="headline"
                 >Você quer mesmo excluir "{{editedBook.title}}"  da sua estante?
                 </v-card-title>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
+                <v-card-actions class="d-flex justify-center">
                   <v-btn 
                     elevation="2"
                     color="purple"
@@ -187,7 +186,6 @@
                     @click="deleteBookConfirm"
                   >Excluir
                   </v-btn>
-                <v-spacer></v-spacer>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -199,7 +197,7 @@
           <v-icon
             small
             class="mr-2"
-            @click="editBook(item)"
+            @click="openEditBook(item)"
           >
             mdi-pencil
           </v-icon>
@@ -213,11 +211,14 @@
 
         <!-- Tabela de listagem de livros / linha expandida -->
         <template v-slot:expanded-item="{ headers, item }">
-          <td :colspan="headers.length">
+          <td 
+            :colspan="headers.length"
+            style="background-color: #363636; color:white;"  
+          >
             <p></p>
-            <p class="ml-15 pl-15"><b>Descrição: </b>{{ item.overview }}</p>
-            <p class="ml-15 pl-15"><b>Idioma: </b>{{ item.language }}</p>
-            <p class="ml-15 pl-15"><b>Páginas: </b>{{ item.pages }}</p>
+            <p class="ml-5"><b>Descrição: </b>{{ item.overview }}</p>
+            <p class="ml-5"><b>Idioma: </b>{{ item.language }}</p>
+            <p class="ml-5"><b>Páginas: </b>{{ item.pages }}</p>
           </td>
         </template>
 
@@ -235,8 +236,8 @@
 </template>
 
 <script>
-
   import { mapActions, mapGetters } from 'vuex'
+  import ls from 'local-storage'
 
   export default {
     data: () => ({
@@ -256,41 +257,46 @@
         { text: 'Edição', value: 'edition' },
         { text: 'Ações', value: 'actions', sortable: false },
       ],
+
+      userBooks:[],
+
       editedBook: {
-        id:null,
-        ownerId: 1,
-        loanId: null,
+        id: '',
+        ownerId: '',
+        loanId: '',
         author: '',
         category: '',
         edition: '',
         language: '',
-        overview:'',
-        pages:'',
+        overview: '',
+        pages: '',
         publisher: '',
         title: ''
       },
+
       defaultBook: {
-        id:null,
-        ownerId: null,
-        loanId: null,
+        id: '',
+        ownerId: '',
+        loanId: '',
         author: '',
         category: '',
         edition: '',
         language: '',
-        overview:'',
-        pages:'',
+        overview: '',
+        pages: '',
         publisher: '',
         title: ''
-      },        
+      },
     }),
 
-    async created() {
-      await this.getBooks()
+    async beforeMount() {
+      await this.setBooks()
+      this.setUserBooks()
     }, 
 
     computed: {
       formTitle () {
-        return this.editedBook.id < 1 ? 'Cadastrar Livro' : 'Editar Livro'
+        return this.editedBook.id > 0 ? 'Editar Livro' : 'Cadastrar Livro'
       },
 
       ...mapGetters({
@@ -298,6 +304,7 @@
         bookById: 'books/getBookById',       
 
       }),
+
     },
 
     watch: {
@@ -312,54 +319,69 @@
 
     methods: {
       ...mapActions({
-        getBooks: 'books/getBooks',
+        setBooks: 'books/setBooks',
         saveBook: 'books/saveBook',
+        editBook: 'books/editBook',
         deleteBook: 'books/deleteBook',
       }),
 
+      setUserBooks(){
+        let userLS = ls.get('currentUser')
+        this.userBooks = this.books
+          .filter(book => book.ownerId === userLS.id)
+      },
 
-      async editBook (book) {
-        this.editedBook = await Object.assign({}, book)
+      openEditBook (book) {
+        this.editedBook = book
         this.dialog = true
       },
 
-      async addUpdateBook() {
-        try {
-          await this.saveBook(this.editedBook)
-          console.log('ret ***addUpdateBook***', this.editedBook)
-        }catch (fail) {
-          console.log(fail)
+      async addEditBook() {
+        if(this.editedBook.id){
+          try {
+            await this.editBook(this.editedBook)
+          }catch (fail) {
+            console.log(fail)
+          }
+        } else {
+            try {
+              console.log('new book without ownerId', this.editedBook.ownerId)
+              let userLS = ls.get('currentUser')
+              this.editedBook.ownerId = userLS.id
+              console.log('new book ownerId', this.editedBook.ownerId)
+              await this.saveBook(this.editedBook)
+            }catch (fail) {
+              console.log(fail)
+            }
         }
-        await this.getBooks()
+        this.setUserBooks()
         this.dialog = false
       }, 
       
-      async openDialogDeleteBook (book) {
-        this.editedBook = await  Object.assign({}, book)
+      openDialogDeleteBook (book) {
+        this.editedBook = book
         this.dialogDelete = true
       },
 
       async deleteBookConfirm () {
         try{
-          console.log('deleteBook -> .vue, book id', this.editedBook.id)
-          await this.deleteBook(this.editedBook.id)
-          
+          await this.deleteBook(this.editedBook)
         } catch(fail){
           console.log(fail)
         }
-        await this.getBooks()
+        this.setUserBooks()
         this.closeDelete()
       },
       
-      async closeDelete () {
+      closeDelete () {
         this.dialog = !this.dialog
         this.dialogDelete = false
-        this.editedBook = await Object.assign({}, this.defaultBook)
+        this.editedBook = this.defaultBook
       },
 
-      async close () {
+      close () {
         this.dialog = false
-        this.editedBook = await Object.assign({}, this.defaultBook)
+        this.editedBook = this.defaultBook
       },
       
     },

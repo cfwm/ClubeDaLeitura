@@ -6,20 +6,55 @@ export default {
     namespaced: true,
     
     actions: {
-        async getLoans(context) {
+        async setLoans(context) {
             await axios.get(resource_uri+'loans')
                 .then(res => {
-                    context.commit('GET_LOANS', res.data)
+                    context.commit('SET_LOANS', res.data)
                 })
                 .catch(err => {
                     console.log(err)
                 })
+        },
+
+        async saveLoan(context, loan){
+            await axios.post(resource_uri+'loans', loan)
+            .then(res => 
+                    context.commit('SAVE_LOAN', res.data))
+                .catch(err => {console.log(err)})
+        },
+
+        async editLoan(context, loan){
+            await axios.patch(resource_uri+`loans/${loan.id}`, loan)
+            .then(res => context.commit('EDIT_LOAN', res.data))
+                .catch(err => {console.log(err)})
+        },
+        
+
+        async deleteLoan(context, deletedLoan) {
+            await axios.delete(resource_uri+`loans/${deletedLoan.id}`)
+                .then(res => context.commit('DELETE_LOAN', res.data))
+                    .catch(err => {console.log(err)})
         }
     },
 
     mutations: {
-        GET_LOANS(state, newState){
-            state.loans = newState},
+        SET_LOANS(state, newState){
+            state.loans = newState
+        },
+
+        SAVE_LOAN(state, newLoan){
+            state.loans.push(newLoan)
+        },
+
+        EDIT_LOAN(state, newLoan){
+            state.loans.map(loan => loan.id === newLoan.id ?
+                loan = newLoan : loan)
+        },
+
+        DELETE_LOAN(state, deletedLoan){
+            state.loans = state.loans
+                .filter(loan => loan.id !== deletedLoan.id)
+        }
     },
 
     state: {
@@ -31,13 +66,3 @@ export default {
     },
     
 }
-
-
-// addLoan: {
-        //     root: true,
-        //     handler({ commit }, loan) {
-        //         setTimeout(() => {
-        //             commit('ADD_LOAN', loan)
-        //         }, 1000)
-        //     }
-        // }

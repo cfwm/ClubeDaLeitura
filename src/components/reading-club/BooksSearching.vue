@@ -15,7 +15,7 @@
       </v-card-title>
       <v-data-table
         :headers="headers"
-        :items="books"
+        :items="booksToSearch"
         item-key="title"
         :search="search"
         multi-sort
@@ -24,7 +24,7 @@
           <v-icon
             small
             class="mr-2"
-            @click="seeBook(item)"
+            @click="openDialogSeeBook(item)"
           >
             mdi-magnify-plus-outline 
           </v-icon>
@@ -43,34 +43,47 @@
           >
             <v-card width="99%">
               <v-card-title class="d-flex justify-center">
-                <span>Livro Selecionado</span>
+                <h2>Livro Selecionado</h2>
               </v-card-title>
               <v-card-text>
                 <v-container>
-                  <v-row class="d-flex justify-start">
-                    <p><b>Título: </b>{{selectedBook.title}}</p>
-                  </v-row>
-                  <v-row class="d-flex justify-start">
-                    <p><b>Autor(a): </b>{{selectedBook.author}}</p>
-                  </v-row>
-                  <v-row class="d-flex justify-start">
-                    <p><b>Resumo: </b>{{selectedBook.overview}}</p>
-                  </v-row>
-                  <v-row class="d-flex justify-start">
-                    <p><b>Categoria: </b>{{selectedBook.category}}</p>
-                  </v-row>
-                  <v-row class="d-flex justify-start">
-                    <p><b>Editora: </b>{{selectedBook.publisher}}</p>
-                  </v-row>
-                  <v-row class="d-flex justify-start">
-                    <p><b>Edição: </b>{{selectedBook.edition}}</p>
-                  </v-row>
-                  <v-row class="d-flex justify-start">
-                    <p><b>Idioma: </b>{{selectedBook.language}}</p>
-                  </v-row>
-                  <v-row class="d-flex justify-start">
-                    <p><b>Páginas: </b>{{selectedBook.pages}}</p>
-                  </v-row>
+                    <v-row class="d-flex justify-center">
+                      <h3>Informações do livro</h3>
+                    </v-row>
+                    <v-row class="d-flex justify-center">
+                      <p><b>Título: </b>{{selectedBook.title}}</p>
+                    </v-row>
+                    <v-row class="d-flex justify-center">
+                      <p><b>Autor(a): </b>{{selectedBook.author}}</p>
+                    </v-row>
+                    <v-row class="d-flex justify-center">
+                      <p><b>Resumo: </b>{{selectedBook.overview}}</p>
+                    </v-row>
+                    <v-row class="d-flex justify-center">
+                      <p><b>Categoria: </b>{{selectedBook.category}}</p>
+                    </v-row>
+                    <v-row class="d-flex justify-center">
+                      <p><b>Editora: </b>{{selectedBook.publisher}}</p>
+                    </v-row>
+                    <v-row class="d-flex justify-center">
+                      <p><b>Edição: </b>{{selectedBook.edition}}</p>
+                    </v-row>
+                    <v-row class="d-flex justify-center">
+                      <p><b>Idioma: </b>{{selectedBook.language}}</p>
+                    </v-row>
+                    <v-row class="d-flex justify-center">
+                      <p><b>Páginas: </b>{{selectedBook.pages}}</p>
+                    </v-row>
+                    <v-spacer></v-spacer>
+                    <v-row class="d-flex justify-center">
+                      <h3>Informações do dono do livro</h3>
+                    </v-row>
+                    <v-row class="d-flex justify-center">
+                      <p><b>Nome: </b>{{bookUserOwner.completeName}}</p>
+                    </v-row>
+                    <v-row class="d-flex justify-center">
+                      <p><b>Username: </b>{{bookUserOwner.username}}</p>
+                    </v-row>
                 </v-container>
               </v-card-text>
               <v-card-actions>
@@ -89,7 +102,7 @@
                       elevation="2"
                       color="green"
                       style="color:white"
-                      @click="sendRequest()"
+                      @click="dialogSendRequest = true"
                     >Solicitar
                     </v-btn>
                   </v-col>
@@ -97,6 +110,7 @@
               </v-card-actions>
             </v-card>        
           </v-dialog>
+          
           <v-dialog
             v-if="dialogSendRequest"
             v-model="dialogSendRequest"
@@ -109,9 +123,10 @@
                 <span>Solicitação de Empréstimo</span>
               </v-card-title>
               <v-card-text>
-                <v-container>
-
-                </v-container>
+                <v-row>
+                  <span>Você deseja confirma a solicitação de empréstimo do livro 
+                    <b>{{selectedBook.title}}</b> pertencente ao usuário <b>{{bookUserOwner.username}}</b>?</span>
+                </v-row>
               </v-card-text>
               <v-card-actions>
                 <v-row>
@@ -130,7 +145,7 @@
                       color="green"
                       style="color:white"
                       @click="sendRequest()"
-                    >Solicitar
+                    >Confirmar
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -145,6 +160,7 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
+  import ls from 'local-storage'
   
   export default {
     data () {
@@ -166,28 +182,12 @@
 
         dialogSeeBook: false,
         dialogSendRequest: false,
+
+        booksToSearch:[],
         
-        selectedBookIndex: -1,
-        selectedBook: {
-          author: '',
-          category: '',
-          edition: '',
-          language: '',
-          overview:'',
-          pages:'',
-          publisher: '',
-          title: ''
-        },
-        defaultBook: {
-          author: '',
-          category: '',
-          edition: '',
-          language: '',
-          overview:'',
-          pages:'',
-          publisher: '',
-          title: ''
-        },
+        selectedBook: null,
+
+        bookUserOwner: null,
       }
     },
     
@@ -201,8 +201,9 @@
       }
     },
 
-    async created() {
-      await this.getBooks()
+    async beforeMount() {
+      await this.setBooks()
+      this.setBooksToSearch()
     },
     
     computed: {
@@ -216,29 +217,49 @@
 
     methods: {
       ...mapActions({
-        getBooks: 'books/getBooks',
-        getLoans: 'loans/getLoans',
-        getRequests: 'requests/getRequests',
-        getUsers: 'users/getUsers',
+        setBooks: 'books/setBooks',
+        setLoans: 'loans/setLoans',
+        setRequests: 'requests/setRequests',
+        setUsers: 'users/setUsers',
         }),
 
-      seeBook(book) {
-        this.selectedBookIndex = this.books.indexOf(book)
-        this.selectedBook = Object.assign({}, book)
+      sendRequest(){
+        //enviar request com bookId (selectedBook.id) e userRequesterId (bookUserOwner.id)
+      },
+
+      setBooksToSearch() {
+        let userLS = ls.get('currentUser')
+        this.booksToSearch = this.books
+          .filter(book => book.ownerId !== userLS.id)
+      },
+
+      openDialogSeeBook(book) {
+        this.selectedBook = book
+        this.bookUserOwner = this.users
+          .find(user => user.id === this.selectedBook.ownerId)
         this.dialogSeeBook = true
       },
 
-      openDialogSendRequest() {
-        this.dialogSendRequest = true
-      },
-
       closeDialogSeeBook() {
-        this.selectedBook = Object.assign({}, this.defaultBook)
-        this.selectedBookIndex = -1
+        this.selectedBook = null
+        this.bookUserOwner = null
         this.dialogSeeBook = false
       },
 
+      async openDialogSendRequest(book) {
+        if(!this.dialogSeeBook){
+          if(this.selectedBook === null) this.selectedBook = book
+          this.bookUserOwner = this.users
+            .find(user => user.id === this.selectedBook.ownerId)
+        }
+        this.dialogSendRequest = true
+      },
+
       closeDialogSendRequest() {
+        if(!this.dialogSeeBook) {
+          this.selectedBook = null
+          this.bookUserOwner = null
+        }
         this.dialogSendRequest = false
       }
     },

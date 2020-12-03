@@ -6,10 +6,10 @@ export default {
     namespaced: true,
 
     actions: {
-        async getBooks(context) {
+        async setBooks(context) {
             await axios.get(resource_uri+'books')
                 .then(res => {
-                    context.commit('GET_BOOKS', res.data)
+                    context.commit('SET_BOOKS', res.data)
                 })
                 .catch(err => {
                     console.log(err)
@@ -17,41 +17,28 @@ export default {
         },
 
         async saveBook(context, book){
-            let 
-                method,
-                methodUrl
+            await axios.post(resource_uri+'books', book)
+            .then(res => 
+                    context.commit('SAVE_BOOK', res.data))
+                .catch(err => {console.log(err)})
+        },
 
-            if(book.id > 0){
-                method = 'patch'
-                methodUrl = `books/${book.id}`
-            } else {
-                method = 'post'
-                methodUrl = 'books'
-            }
-            await axios[method](resource_uri+[methodUrl], book)
-                .then(context.commit('SAVE_BOOK'))
-                    .catch(err => {
-                        console.log(err)
-                    })
-                    console.log(book)
-                },
+        async editBook(context, book){
+            await axios.patch(resource_uri+`books/${book.id}`, book)
+            .then(res => context.commit('EDIT_BOOK', res.data))
+                .catch(err => {console.log(err)})
+        },
         
 
-        async deleteBook(context, bookId) {
-            await axios.delete(resource_uri+`books/${bookId}`)
-                .then(res => {
-                    console.log('res actions deleteBook', res.data)
-                    context.commit('DELETE_BOOK', bookId)
-                })
-                    .catch(err => {
-                        console.log(err)
-                    })
+        async deleteBook(context, deletedBook) {
+            await axios.delete(resource_uri+`books/${deletedBook.id}`)
+                .then(res => context.commit('DELETE_BOOK', res.data))
+                    .catch(err => {console.log(err)})
         }
-        
     },
 
     mutations: {
-        GET_BOOKS(state, newState){
+        SET_BOOKS(state, newState){
             state.books = newState
         },
 
@@ -59,15 +46,27 @@ export default {
             state.books.push(newBook)
         },
 
-        DELETE_BOOK(state, bookId){
-            state.books = state.books
-                .filter(book => book.id !== bookId)
+        EDIT_BOOK(state, newBook){
+            state.books.map(book => book.id === newBook.id ?
+                book = newBook : book)
+        },
+
+        // DELETE_BOOK(state, deletedBook){
+        //     state.books = state.books
+        //         .filter(book => book.id !== deletedBook.id)
+        // }
+        DELETE_BOOK(state, deletedBook){
+            state.books.map(book => book.id !== deletedBook.id ?
+                book : null)
         }
     },
     
-    state: () => ({
+    // state: () => ({
+    //     books: '',
+    // }),
+    state: {
         books: '',
-    }),
+    },
 
     getters: {
         getBooks: (state) => state.books,
