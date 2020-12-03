@@ -475,7 +475,7 @@ export default {
             this.selectedLoan = {
                 requestId: this.currentRequest.id,
                 dateBorrow: this.curday('-'),
-                dateDevolution: undefined
+                dateDevolution: ''
             }
             await this.updateLoanAccept()
             await this.updateRequestStatusOne()
@@ -488,7 +488,7 @@ export default {
             this.selectedLoan = {
                 requestId: request.id,
                 dateBorrow: this.curday('-'),
-                dateDevolution: undefined
+                dateDevolution: ''
             }
             this.currentRequest = request
             this.requestBook = this.books
